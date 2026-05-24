@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Xcode user-specific files
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad/
+
+# Xcode build output
+build/
+DerivedData/
+
+# Swift Package Manager local state
+.swiftpm/
+Packages/
+
+# Firebase local config
+ZalphaDecoder/GoogleService-Info.plist
+
+# Local scratch files
+/custom
