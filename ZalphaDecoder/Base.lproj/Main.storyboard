@@ -57,7 +57,7 @@
                                                                             <constraint firstAttribute="height" constant="48" id="U9Y-gM-rY3"/>
                                                                             <constraint firstAttribute="width" constant="48" id="frT-XM-dmB"/>
                                                                         </constraints>
-                                                                        <state key="normal" title="Button">
+                                                                        <state key="normal">
                                                                             <imageReference key="image" image="arrow.left.arrow.right" catalog="system" symbolScale="medium"/>
                                                                         </state>
                                                                         <connections>
@@ -101,16 +101,6 @@
                                                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                                         <state key="normal" title="Clean"/>
-                                                                        <buttonConfiguration key="configuration" style="plain">
-                                                                            <attributedString key="attributedTitle">
-                                                                                <fragment content="Clean">
-                                                                                    <attributes>
-                                                                                        <font key="NSFont" size="13" name="Helvetica"/>
-                                                                                        <font key="NSOriginalFont" size="12" name="Helvetica"/>
-                                                                                    </attributes>
-                                                                                </fragment>
-                                                                            </attributedString>
-                                                                        </buttonConfiguration>
                                                                         <connections>
                                                                             <action selector="styleButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ndw-56-yZt"/>
                                                                         </connections>
@@ -120,16 +110,6 @@
                                                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                                         <state key="normal" title="Plain"/>
-                                                                        <buttonConfiguration key="configuration" style="plain">
-                                                                            <attributedString key="attributedTitle">
-                                                                                <fragment content="Plain">
-                                                                                    <attributes>
-                                                                                        <font key="NSFont" size="13" name="Helvetica"/>
-                                                                                        <font key="NSOriginalFont" size="12" name="Helvetica"/>
-                                                                                    </attributes>
-                                                                                </fragment>
-                                                                            </attributedString>
-                                                                        </buttonConfiguration>
                                                                         <connections>
                                                                             <action selector="styleButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ij2-N1-1nA"/>
                                                                         </connections>
@@ -139,16 +119,6 @@
                                                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                                         <state key="normal" title="Casual"/>
-                                                                        <buttonConfiguration key="configuration" style="plain">
-                                                                            <attributedString key="attributedTitle">
-                                                                                <fragment content="Casual">
-                                                                                    <attributes>
-                                                                                        <font key="NSFont" size="13" name="Helvetica"/>
-                                                                                        <font key="NSOriginalFont" size="12" name="Helvetica"/>
-                                                                                    </attributes>
-                                                                                </fragment>
-                                                                            </attributedString>
-                                                                        </buttonConfiguration>
                                                                         <connections>
                                                                             <action selector="styleButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fF9-Xu-Ogv"/>
                                                                         </connections>
@@ -158,17 +128,6 @@
                                                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                                         <state key="normal" title="Zalpha"/>
-                                                                        <buttonConfiguration key="configuration" style="plain">
-                                                                            <attributedString key="attributedTitle">
-                                                                                <fragment content="Zalpha">
-                                                                                    <attributes>
-                                                                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                        <font key="NSFont" size="13" name="Helvetica"/>
-                                                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                                                    </attributes>
-                                                                                </fragment>
-                                                                            </attributedString>
-                                                                        </buttonConfiguration>
                                                                         <connections>
                                                                             <action selector="styleButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nXx-kQ-WRx"/>
                                                                         </connections>
@@ -227,18 +186,6 @@
                                                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                                 <state key="normal" title="Decode"/>
-                                                                <buttonConfiguration key="configuration" style="filled">
-                                                                    <attributedString key="attributedTitle">
-                                                                        <fragment content="Decode">
-                                                                            <attributes>
-                                                                                <font key="NSFont" size="21" name="Helvetica"/>
-                                                                                <font key="NSOriginalFont" size="12" name="Helvetica"/>
-                                                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                                            </attributes>
-                                                                        </fragment>
-                                                                    </attributedString>
-                                                                    <color key="baseBackgroundColor" red="1" green="0.27058823529999998" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                </buttonConfiguration>
                                                                 <connections>
                                                                     <action selector="decodeButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3jk-ne-pZv"/>
                                                                 </connections>
@@ -261,7 +208,7 @@
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I9j-Hs-IhD">
                                                                         <rect key="frame" x="342.66666666666669" y="165.66666666666663" width="51.333333333333314" height="34.333333333333343"/>
                                                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                        <state key="normal" title="Button">
+                                                                        <state key="normal">
                                                                             <imageReference key="image" image="doc.on.doc" catalog="system" symbolScale="medium"/>
                                                                         </state>
                                                                         <connections>
@@ -294,7 +241,7 @@
                                                                             <constraint firstAttribute="width" constant="37" id="EzZ-1o-deZ"/>
                                                                         </constraints>
                                                                         <color key="tintColor" red="1" green="0.27058823529999998" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                        <state key="normal" title="Button">
+                                                                        <state key="normal">
                                                                             <imageReference key="image" image="lightbulb.max" catalog="system" symbolScale="medium"/>
                                                                         </state>
                                                                     </button>

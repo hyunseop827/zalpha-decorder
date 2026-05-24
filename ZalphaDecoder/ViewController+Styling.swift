@@ -76,6 +76,8 @@ extension ViewController {
     func configureLanguageButtons() {
         [sourceLanguageButton, targetLanguageButton].forEach {
             $0?.configuration = nil
+            $0?.setImage(UIImage(systemName: "globe"), for: .normal)
+            $0?.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
             $0?.showsMenuAsPrimaryAction = true
             $0?.changesSelectionAsPrimaryAction = false
             $0?.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -92,29 +94,43 @@ extension ViewController {
         }
 
         swapLanguageButton.configuration = nil
+        swapLanguageButton.setTitle(nil, for: .normal)
+        swapLanguageButton.setImage(UIImage(systemName: "arrow.left.arrow.right"), for: .normal)
         swapLanguageButton.tintColor = accentColor
         swapLanguageButton.backgroundColor = controlBackgroundColor
         swapLanguageButton.layer.cornerRadius = 24
         swapLanguageButton.layer.borderWidth = 1
         swapLanguageButton.layer.borderColor = borderColor.cgColor
+        swapLanguageButton.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 19, weight: .medium)
         applySmallShadow(to: swapLanguageButton)
     }
 
     func configureStyleButtons() {
-        [cleanStyleButton, plainStyleButton, casualStyleButton, genZalphaStyleButton].forEach {
-            $0?.configuration = nil
-            $0?.titleLabel?.adjustsFontSizeToFitWidth = true
-            $0?.titleLabel?.minimumScaleFactor = 0.8
-            $0?.layer.cornerRadius = 17
-            $0?.layer.borderWidth = 1
-            $0?.clipsToBounds = false
-            applySmallShadow(to: $0)
+        let buttons: [(UIButton, String)] = [
+            (cleanStyleButton, "Clean"),
+            (plainStyleButton, "Plain"),
+            (casualStyleButton, "Casual"),
+            (genZalphaStyleButton, "Zalpha")
+        ]
+
+        buttons.forEach { button, title in
+            button.configuration = nil
+            button.setTitle(title, for: .normal)
+            button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
+            button.titleLabel?.adjustsFontSizeToFitWidth = true
+            button.titleLabel?.minimumScaleFactor = 0.8
+            button.layer.cornerRadius = 17
+            button.layer.borderWidth = 1
+            button.clipsToBounds = false
+            applySmallShadow(to: button)
         }
     }
 
     func configureDecodeButton() {
         decodeButton.configuration = nil
+        decodeButton.setTitle("Decode", for: .normal)
         decodeButton.setTitleColor(.white, for: .normal)
+        decodeButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .semibold)
         decodeButton.backgroundColor = accentColor
         decodeButton.layer.cornerRadius = 22
     }
@@ -128,7 +144,14 @@ extension ViewController {
 
     func configureUtilityButtons() {
         copyButton.configuration = nil
+        copyButton.setTitle(nil, for: .normal)
+        copyButton.setImage(UIImage(systemName: "doc.on.doc"), for: .normal)
+        copyButton.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 30, weight: .regular)
+
         notesIconButton.configuration = nil
+        notesIconButton.setTitle(nil, for: .normal)
+        notesIconButton.setImage(UIImage(systemName: "lightbulb.max"), for: .normal)
+        notesIconButton.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 24, weight: .regular)
         notesIconButton.isUserInteractionEnabled = false
     }
 
