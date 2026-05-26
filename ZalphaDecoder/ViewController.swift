@@ -62,6 +62,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIGestureRecognizerD
     let aiService = AIService()
     var isDecoding = false
     var hasShownStartupSplash = false
+    var emptyDecodeTapCount = 0
     private let maximumInputLength = 100
     var toastLabel: ToastLabel?
     var toastHideWorkItem: DispatchWorkItem?
@@ -139,6 +140,10 @@ class ViewController: UIViewController, UITextViewDelegate, UIGestureRecognizerD
     func textViewDidChange(_ textView: UITextView) {
         if textView == inputTextView, textView.text.count > maximumInputLength {
             textView.text = String(textView.text.prefix(maximumInputLength))
+        }
+
+        if textView == inputTextView, !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            emptyDecodeTapCount = 0
         }
 
         updateCharacterCount()

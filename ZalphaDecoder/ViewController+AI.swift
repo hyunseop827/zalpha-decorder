@@ -11,6 +11,13 @@ extension ViewController {
 
     @MainActor
     func runGreetingDecode() async {
+        let input = inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !input.isEmpty else {
+            showToast(nextEmptyDecodeMessage())
+            return
+        }
+
+        emptyDecodeTapCount = 0
         setDecodeLoading(true)
         defer {
             setDecodeLoading(false)
@@ -34,5 +41,31 @@ extension ViewController {
         decodeButton.setTitle(title, for: .disabled)
         decodeButton.setTitleColor(.white, for: .normal)
         decodeButton.setTitleColor(UIColor.white.withAlphaComponent(0.86), for: .disabled)
+    }
+
+    private func nextEmptyDecodeMessage() -> String {
+        emptyDecodeTapCount += 1
+
+        guard emptyDecodeTapCount > 3 else {
+            return "Enter text to decode."
+        }
+
+        let messages = [
+            "Bro, it's empty.",
+            "There is nothing to decode.",
+            "Bro, this ain't tuff. 🥀",
+            "No text? We are cooked.",
+            "Is bro okay?",
+            "Type something plz 🙏",
+            "No words, no decode.",
+            "Skibidi Toilet",
+            "I mog you btw...",
+            "Messi or Ronaldo ???",
+            "Zalpha needs actual text, bro.",
+            "Idc at this moment",
+            "This is sub3 behavior"
+        ]
+        let index = (emptyDecodeTapCount - 4) % messages.count
+        return messages[index]
     }
 }
