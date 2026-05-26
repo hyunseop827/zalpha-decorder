@@ -20,11 +20,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		004FF3612FC469130048ABAC /* Exceptions for "icons" folder in "ZalphaDecoder" target */ = {
+		004FF3612FC469130048ABAC /* Exceptions for "assets" folder in "ZalphaDecoder" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"icon-dark.png",
 				"icon-light.png",
+				"screen-dark.png",
+				"screen-light.png",
 			);
 			target = 00D64FD52FAADC3500CC0F4B /* ZalphaDecoder */;
 		};
@@ -39,12 +41,12 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		004FF3602FC469120048ABAC /* icons */ = {
+		004FF3602FC469120048ABAC /* assets */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				004FF3612FC469130048ABAC /* Exceptions for "icons" folder in "ZalphaDecoder" target */,
+				004FF3612FC469130048ABAC /* Exceptions for "assets" folder in "ZalphaDecoder" target */,
 			);
-			path = icons;
+			path = assets;
 			sourceTree = "<group>";
 		};
 		00D64FD82FAADC3500CC0F4B /* ZalphaDecoder */ = {
@@ -96,7 +98,7 @@
 				00D64FD82FAADC3500CC0F4B /* ZalphaDecoder */,
 				00D64FF52FAAE4B000CC0F4B /* Frameworks */,
 				00D64FD72FAADC3500CC0F4B /* Products */,
-				004FF3602FC469120048ABAC /* icons */,
+				004FF3602FC469120048ABAC /* assets */,
 			);
 			sourceTree = "<group>";
 		};
@@ -131,7 +133,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				004FF3602FC469120048ABAC /* icons */,
+				004FF3602FC469120048ABAC /* assets */,
 				00D64FD82FAADC3500CC0F4B /* ZalphaDecoder */,
 			);
 			name = ZalphaDecoder;

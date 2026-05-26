@@ -61,6 +61,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIGestureRecognizerD
     let accentColor = UIColor(red: 1.0, green: 0.27, blue: 0.0, alpha: 1.0)
     let aiService = AIService()
     var isDecoding = false
+    var hasShownStartupSplash = false
     private let maximumInputLength = 100
     var toastLabel: ToastLabel?
     var toastHideWorkItem: DispatchWorkItem?
@@ -83,6 +84,12 @@ class ViewController: UIViewController, UITextViewDelegate, UIGestureRecognizerD
         super.viewDidLayoutSubviews()
 
         updateShadowPaths()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        showStartupSplashIfNeeded()
     }
 
     @IBAction func styleButtonTapped(_ sender: UIButton) {
