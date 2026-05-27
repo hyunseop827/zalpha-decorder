@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Scene delegate for the storyboard-based app lifecycle.
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -49,4 +50,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
-

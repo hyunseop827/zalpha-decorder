@@ -6,16 +6,14 @@
 //
 
 import UIKit
-// 파이어베이스 임포트
 import FirebaseCore
 
+/// Application delegate that configures Firebase before the main UI loads.
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    /// Initializes Firebase when the app finishes launching.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        
-        // 파이어베이스 기본 설정
         FirebaseApp.configure()
         return true
     }
@@ -36,4 +34,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
-

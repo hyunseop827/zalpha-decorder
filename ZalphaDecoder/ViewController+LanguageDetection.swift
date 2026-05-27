@@ -8,8 +8,10 @@
 import NaturalLanguage
 import UIKit
 
+/// Adds lightweight source-language detection for Auto mode and explicit source mismatch checks.
 extension ViewController {
 
+    /// Returns the explicit source language or detects one when source is Auto.
     func resolvedSourceLanguage(for input: String) -> Language? {
         guard sourceLanguage == .auto else {
             return sourceLanguage
@@ -18,6 +20,7 @@ extension ViewController {
         return detectInputLanguage(input)
     }
 
+    /// Returns a warning message when explicit source language clearly conflicts with the input.
     func sourceLanguageMismatchMessage(for input: String) -> String? {
         guard sourceLanguage != .auto, shouldCheckExplicitSource(for: input) else {
             return nil
@@ -29,11 +32,13 @@ extension ViewController {
         return "Input looks \(detectedLanguage.displayName). Check source language."
     }
 
+    /// Skips mismatch checks for very short or ambiguous input.
     private func shouldCheckExplicitSource(for input: String) -> Bool {
         let counts = scriptCounts(in: input)
         return counts.hangul + counts.latin >= 4
     }
 
+    /// Detects Korean or English using script counts first, then NaturalLanguage as fallback.
     private func detectInputLanguage(_ input: String) -> Language? {
         let counts = scriptCounts(in: input)
 
@@ -64,6 +69,7 @@ extension ViewController {
         return nil
     }
 
+    /// Counts Hangul and Latin letters so short mixed input can be handled predictably.
     private func scriptCounts(in input: String) -> (hangul: Int, latin: Int) {
         input.unicodeScalars.reduce(into: (hangul: 0, latin: 0)) { counts, scalar in
             if isHangul(scalar) {
@@ -74,6 +80,7 @@ extension ViewController {
         }
     }
 
+    /// Checks whether a Unicode scalar belongs to Korean Hangul blocks.
     private func isHangul(_ scalar: UnicodeScalar) -> Bool {
         switch scalar.value {
         case 0x1100...0x11FF, 0x3130...0x318F, 0xAC00...0xD7AF, 0xA960...0xA97F, 0xD7B0...0xD7FF:
@@ -83,6 +90,7 @@ extension ViewController {
         }
     }
 
+    /// Checks whether a Unicode scalar is an English alphabet letter.
     private func isLatinLetter(_ scalar: UnicodeScalar) -> Bool {
         (0x0041...0x005A).contains(scalar.value) || (0x0061...0x007A).contains(scalar.value)
     }

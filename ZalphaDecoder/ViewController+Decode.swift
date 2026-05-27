@@ -7,8 +7,10 @@
 
 import UIKit
 
+/// Coordinates Decode button flow, including validation, language resolution, AI calls, and loading state.
 extension ViewController {
 
+    /// Validates input, resolves language settings, calls AIService, and writes the result to the output box.
     @MainActor
     func runDecode() async {
         let input = inputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -50,6 +52,7 @@ extension ViewController {
         }
     }
 
+    /// Updates the Decode button while a Gemini request is in progress.
     @MainActor
     func setDecodeLoading(_ isLoading: Bool) {
         isDecoding = isLoading
@@ -62,6 +65,7 @@ extension ViewController {
         decodeButton.setTitleColor(UIColor.white.withAlphaComponent(0.86), for: .disabled)
     }
 
+    /// Returns the next empty-input toast message based on repeated empty Decode taps.
     private func nextEmptyDecodeMessage() -> String {
         emptyDecodeTapCount += 1
 
@@ -94,6 +98,12 @@ private enum DecodeMessage {
         "Zalpha needs actual text, bro.",
         "Idc at this moment",
         "This is sub3 behavior",
-        "Never expected you would click it for this much... you win bro.."
+        "Never expected someone doing this",
+        "you win bro",
+        "go sleep plz",
+        "Enter text to decode.",
+        "Enter text to decode.",
+        "Enter text to decode.",
+        "touch grass plz"
     ]
 }

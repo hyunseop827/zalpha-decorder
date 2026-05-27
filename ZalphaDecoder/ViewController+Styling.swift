@@ -7,8 +7,10 @@
 
 import UIKit
 
+/// Groups runtime UI styling that depends on state, trait changes, or layer configuration.
 extension ViewController {
 
+    /// Runs the full runtime styling setup for the storyboard-backed interface.
     func configureInterface() {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.tintColor = labelColor
@@ -23,6 +25,7 @@ extension ViewController {
         configureKeyboardDismissal()
     }
 
+    /// Re-applies dynamic colors and shadows when the system light/dark appearance changes.
     func registerForThemeChanges() {
         registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (viewController: ViewController, _) in
             viewController.configureDynamicColors()
@@ -31,6 +34,7 @@ extension ViewController {
         }
     }
 
+    /// Applies colors that depend on the current light or dark mode.
     func configureDynamicColors() {
         view.backgroundColor = pageBackgroundColor
         scrollView.backgroundColor = pageBackgroundColor
@@ -66,6 +70,7 @@ extension ViewController {
         navigationController?.navigationBar.tintColor = labelColor
     }
 
+    /// Applies card corner radius, border, and shadow layer styling.
     func configureCards() {
         applyCardStyle(to: mainCardView, cornerRadius: 18, shadowOpacity: isDarkMode ? 0.12 : 0.16, shadowRadius: 9)
         applyCardStyle(to: inputCardView, cornerRadius: 12, shadowOpacity: isDarkMode ? 0.10 : 0.18, shadowRadius: 6)
@@ -73,6 +78,7 @@ extension ViewController {
         applyCardStyle(to: notesCardView, cornerRadius: 12, shadowOpacity: isDarkMode ? 0.10 : 0.16, shadowRadius: 6)
     }
 
+    /// Configures the source, swap, and target language buttons.
     func configureLanguageButtons() {
         [sourceLanguageButton, targetLanguageButton].forEach {
             $0?.configuration = nil
@@ -105,6 +111,7 @@ extension ViewController {
         applySmallShadow(to: swapLanguageButton)
     }
 
+    /// Configures shared typography and layer styling for the style buttons.
     func configureStyleButtons() {
         let buttons: [UIButton] = [
             cleanStyleButton,
@@ -125,6 +132,7 @@ extension ViewController {
         }
     }
 
+    /// Configures the main Decode action button.
     func configureDecodeButton() {
         decodeButton.configuration = nil
         decodeButton.setTitle("Decode", for: .normal)
@@ -134,6 +142,7 @@ extension ViewController {
         decodeButton.layer.cornerRadius = 22
     }
 
+    /// Normalizes text view padding so the storyboard cards keep consistent spacing.
     func configureTextContainers() {
         [inputTextView, outputTextView].forEach {
             $0?.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -141,6 +150,7 @@ extension ViewController {
         }
     }
 
+    /// Configures icon-only utility buttons such as copy and notes.
     func configureUtilityButtons() {
         copyButton.configuration = nil
         copyButton.setTitle(nil, for: .normal)
@@ -154,6 +164,7 @@ extension ViewController {
         notesIconButton.isUserInteractionEnabled = false
     }
 
+    /// Adds a background tap gesture used to dismiss the keyboard.
     func configureKeyboardDismissal() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.delegate = self
@@ -161,6 +172,7 @@ extension ViewController {
         view.addGestureRecognizer(tapGesture)
     }
 
+    /// Updates shadow paths after views have final bounds.
     func updateShadowPaths() {
         [mainCardView, inputCardView, outputCardView, notesCardView, sourceLanguageButton, swapLanguageButton, targetLanguageButton, cleanStyleButton, plainStyleButton, casualStyleButton, genZalphaStyleButton].forEach {
             guard let view = $0 else { return }
@@ -168,6 +180,7 @@ extension ViewController {
         }
     }
 
+    /// Applies the common rounded card layer style.
     func applyCardStyle(to view: UIView, cornerRadius: CGFloat, shadowOpacity: Float, shadowRadius: CGFloat) {
         view.layer.cornerRadius = cornerRadius
         view.layer.cornerCurve = .continuous
@@ -180,6 +193,7 @@ extension ViewController {
         view.clipsToBounds = false
     }
 
+    /// Applies the common subtle button shadow style.
     func applySmallShadow(to view: UIView?) {
         view?.layer.shadowColor = UIColor.black.cgColor
         view?.layer.shadowOpacity = isDarkMode ? 0.10 : 0.18

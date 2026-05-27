@@ -7,8 +7,10 @@
 
 import UIKit
 
+/// Shows the temporary branded splash overlay after the system launch screen.
 extension ViewController {
 
+    /// Displays the in-app splash once, then fades it out after a short delay.
     func showStartupSplashIfNeeded() {
         guard !hasShownStartupSplash else { return }
         hasShownStartupSplash = true

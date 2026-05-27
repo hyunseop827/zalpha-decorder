@@ -8,20 +8,23 @@
 import FirebaseAILogic
 import Foundation
 
+/// Normalized AI errors that the UI can map to user-facing messages.
 enum AIServiceError: Error {
     case emptyResponse
     case blocked
     case rateLimited
 }
 
+/// Thin Firebase AI Logic wrapper that builds decode prompts and returns cleaned model text.
 final class AIService {
     private lazy var model = FirebaseAI.firebaseAI(backend: .googleAI()).generativeModel(
-        modelName: "gemini-2.5-flash",
+        modelName: "gemini-3.1-flash-lite",
         safetySettings: [
             SafetySetting(harmCategory: .harassment, threshold: .blockOnlyHigh)
         ]
     )
 
+    /// Sends the user's text to Gemini and returns only the cleaned decoded result.
     func decode(text: String, sourceLanguage: String, targetLanguage: String, style: TranslationStyle) async throws -> String {
         let taskInstruction = sourceLanguage == targetLanguage
             ? "Rewrite or decode the following text in \(targetLanguage) using the selected style."
@@ -63,6 +66,7 @@ final class AIService {
         return text
     }
 
+    /// Detects Firebase quota errors so the UI can show a clearer rate-limit message.
     private func isRateLimitError(_ error: Error) -> Bool {
         let nsError = error as NSError
         let description = nsError.localizedDescription
@@ -74,6 +78,7 @@ final class AIService {
     }
 }
 
+/// Prompt instructions for each user-visible style option.
 private extension TranslationStyle {
     var promptInstruction: String {
         switch self {
@@ -99,7 +104,7 @@ private extension TranslationStyle {
             return """
             Style: Zalpha.
             Use Gen Z / Gen Alpha / brainrot / meme-like wording. Slang is always allowed, but preserve the meaning and do not explain the slang.
-            Emoji is welcomed.
+            Emoji can be used and allowed.
             Example tone: "Bro, I'm actually cooked. What do I even do?"
             """
         }

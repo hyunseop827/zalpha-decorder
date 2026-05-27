@@ -7,8 +7,10 @@
 
 import UIKit
 
+/// Presents short toast messages for copy, validation, and decode feedback.
 extension ViewController {
 
+    /// Shows a single temporary toast, replacing any currently visible toast.
     func showToast(_ message: String) {
         toastHideWorkItem?.cancel()
 
@@ -33,6 +35,7 @@ extension ViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.6, execute: workItem)
     }
 
+    /// Creates and pins the reusable toast label near the bottom safe area.
     func makeToastLabel() -> ToastLabel {
         let label = ToastLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -58,6 +61,7 @@ extension ViewController {
     }
 }
 
+/// Padded label used by the toast view.
 final class ToastLabel: UILabel {
     private let insets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
 
@@ -66,6 +70,7 @@ final class ToastLabel: UILabel {
         return CGSize(width: size.width + insets.left + insets.right, height: size.height + insets.top + insets.bottom)
     }
 
+    /// Draws text inside the custom padding area.
     override func drawText(in rect: CGRect) {
         super.drawText(in: rect.inset(by: insets))
     }
