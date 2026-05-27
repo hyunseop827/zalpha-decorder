@@ -232,7 +232,7 @@
                                                                 </constraints>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jju-FP-343" userLabel="Decode Box View">
-                                                                <rect key="frame" x="0.0" y="649" width="394" height="150"/>
+                                                                <rect key="frame" x="0.0" y="649" width="394" height="170"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FQ9-sp-BC1">
                                                                         <rect key="frame" x="0.0" y="0.0" width="37" height="34"/>
@@ -252,8 +252,8 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S45-ky-nqM" userLabel="Decode Notes Body">
-                                                                        <rect key="frame" x="29" y="42" width="349" height="48"/>
-                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                                                                        <rect key="frame" x="29" y="42" width="349" height="70"/>
+                                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
@@ -262,12 +262,13 @@
                                                                 <constraints>
                                                                     <constraint firstItem="S45-ky-nqM" firstAttribute="top" secondItem="FQ9-sp-BC1" secondAttribute="bottom" constant="8" id="4FL-M2-gTb"/>
                                                                     <constraint firstAttribute="trailing" secondItem="S45-ky-nqM" secondAttribute="trailing" constant="16" id="JzB-cs-gUw"/>
+                                                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="S45-ky-nqM" secondAttribute="bottom" constant="18" id="K7u-6u-kwe"/>
                                                                     <constraint firstItem="FQ9-sp-BC1" firstAttribute="leading" secondItem="Jju-FP-343" secondAttribute="leading" constant="16" id="MRg-Nx-vuc"/>
                                                                     <constraint firstItem="eu6-qw-FGR" firstAttribute="leading" secondItem="FQ9-sp-BC1" secondAttribute="trailing" constant="8" id="Upy-Re-ox3"/>
                                                                     <constraint firstItem="FQ9-sp-BC1" firstAttribute="top" secondItem="Jju-FP-343" secondAttribute="top" constant="14" id="e5t-Fn-wiS"/>
                                                                     <constraint firstItem="S45-ky-nqM" firstAttribute="leading" secondItem="Jju-FP-343" secondAttribute="leading" constant="29" id="gZs-9h-7cv"/>
                                                                     <constraint firstItem="eu6-qw-FGR" firstAttribute="top" secondItem="Jju-FP-343" secondAttribute="top" constant="22" id="nma-cc-zXF"/>
-                                                                    <constraint firstAttribute="height" constant="150" id="yng-d1-OI3"/>
+                                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="yng-d1-OI3"/>
                                                                 </constraints>
                                                             </view>
                                                         </subviews>

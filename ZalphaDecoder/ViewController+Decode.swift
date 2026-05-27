@@ -36,12 +36,14 @@ extension ViewController {
         }
 
         do {
-            outputTextView.text = try await aiService.decode(
+            let decodeResult = try await aiService.decode(
                 text: input,
                 sourceLanguage: resolvedSourceLanguage.displayName,
                 targetLanguage: targetLanguage.displayName,
                 style: selectedStyle
             )
+            outputTextView.text = decodeResult.result
+            notesBodyLabel.text = formattedNotes(decodeResult.notes)
         } catch AIServiceError.blocked {
             print("Firebase AI Logic decode blocked by safety filters.")
             showToast(DecodeMessage.safetyBlocked)
@@ -50,6 +52,9 @@ extension ViewController {
             showToast(DecodeMessage.rateLimited)
         } catch AIServiceError.emptyResponse {
             print("Firebase AI Logic decode returned an empty response.")
+            showToast(DecodeMessage.genericError)
+        } catch AIServiceError.invalidResponse {
+            print("Firebase AI Logic decode returned invalid JSON.")
             showToast(DecodeMessage.genericError)
         } catch {
             print("Firebase AI Logic decode failed:", error)
@@ -80,6 +85,16 @@ extension ViewController {
 
         let index = (emptyDecodeTapCount - 4) % DecodeMessage.emptyInputVariants.count
         return DecodeMessage.emptyInputVariants[index]
+    }
+
+    /// Formats short Decode Notes as bullets for the notes card.
+    private func formattedNotes(_ notes: [String]) -> String {
+        notes
+            .prefix(3)
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+            .map { "• \($0)" }
+            .joined(separator: "\n")
     }
 }
 
