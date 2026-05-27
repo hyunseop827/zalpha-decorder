@@ -43,9 +43,14 @@ extension ViewController {
                 style: selectedStyle
             )
         } catch AIServiceError.blocked {
+            print("Firebase AI Logic decode blocked by safety filters.")
             showToast(DecodeMessage.safetyBlocked)
         } catch AIServiceError.rateLimited {
+            print("Firebase AI Logic decode rate limited.")
             showToast(DecodeMessage.rateLimited)
+        } catch AIServiceError.emptyResponse {
+            print("Firebase AI Logic decode returned an empty response.")
+            showToast(DecodeMessage.genericError)
         } catch {
             print("Firebase AI Logic decode failed:", error)
             showToast(DecodeMessage.genericError)

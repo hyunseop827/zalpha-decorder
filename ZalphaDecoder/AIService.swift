@@ -32,10 +32,10 @@ final class AIService {
         let prompt = """
         \(taskInstruction)
         Preserve the original meaning.
-        If the original text contains profanity, preserve the emotional intent but prefer mild, non-hateful wording.
-        For Casual or Zalpha style, light common profanity may be preserved when needed for meaning.
-        Do not add stronger profanity, hate slurs, threats, or sexualized insults.
-        If the original wording is too intense, soften it instead of refusing.
+        If the original text contains profanity or harsh wording, preserve the emotional intent but reduce the intensity.
+        Do not reproduce strong profanity directly.
+        Do not add stronger profanity, hate slurs, threats, sexualized insults, or targeted abuse.
+        If the original wording is too intense, soften it into style-appropriate wording instead of refusing.
         \(style.promptInstruction)
         Return only the final decoded translation. No markdown. No explanation. No notes.
 
@@ -86,24 +86,27 @@ private extension TranslationStyle {
             return """
             Style: Formal.
             Use polished, respectful, professional wording suitable for email, school, or workplace.
+            Remove profanity and turn harsh wording into calm, professional language.
             Example tone: "I believe I made a serious mistake. What should I do?"
             """
         case .plain:
             return """
             Style: Plain.
-            Use simple, direct, easy-to-understand wording. Avoid slang, jokes, and extra flavor.
+            Use normal, natural, easy-to-understand wording. Avoid slang, jokes, profanity, and extra flavor.
             Example tone: "I really messed up. What should I do?"
             """
         case .casual:
             return """
             Style: Casual.
             Use natural friend-to-friend wording. Be relaxed and conversational. Use contractions in English when natural.
+            If the input has strong profanity, soften it into mild casual phrases like "messed up", "screwed up", or "this sucks".
             Example tone: "I really screwed up. What do I do now?"
             """
         case .genZalpha:
             return """
             Style: Zalpha.
-            Use Gen Z / Gen Alpha / brainrot / meme-like wording. Slang is always allowed, but preserve the meaning and do not explain the slang.
+            Use Gen Z / Gen Alpha / brainrot / meme-like wording. Slang, exaggeration, and playful dramatic wording are allowed, but preserve the meaning and do not explain the slang.
+            If the input has strong profanity, soften it into meme-style phrases like "cooked", "not it", "ain't it", or "I'm done".
             Emoji can be used and allowed.
             Example tone: "Bro, I'm actually cooked. What do I even do?"
             """
