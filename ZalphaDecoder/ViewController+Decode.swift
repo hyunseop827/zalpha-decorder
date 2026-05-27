@@ -43,7 +43,7 @@ extension ViewController {
                 style: selectedStyle
             )
             outputTextView.text = decodeResult.result
-            notesBodyLabel.text = formattedNotes(decodeResult.notes)
+            notesBodyLabel.attributedText = formattedNotes(decodeResult.notes)
             HistoryStore.shared.save(
                 HistoryItem(
                     id: UUID(),
@@ -99,9 +99,13 @@ extension ViewController {
         return DecodeMessage.emptyInputVariants[index]
     }
 
-    /// Formats short Decode Notes as bullets for the notes card.
-    private func formattedNotes(_ notes: [DecodeNote]) -> String {
-        notes
+    /// Formats short Decode Notes as spaced bullets for the notes card.
+    private func formattedNotes(_ notes: [DecodeNote]) -> NSAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 3
+        paragraphStyle.paragraphSpacing = 7
+
+        let text = notes
             .prefix(3)
             .filter { !$0.sourceExpression.isEmpty && !$0.meaning.isEmpty }
             .map { note in
@@ -111,6 +115,14 @@ extension ViewController {
                 return "• \"\(note.sourceExpression)\" means \"\(note.meaning)\"\(translatedText)."
             }
             .joined(separator: "\n")
+
+        return NSAttributedString(
+            string: text,
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 14, weight: .medium),
+                .paragraphStyle: paragraphStyle
+            ]
+        )
     }
 }
 

@@ -55,6 +55,7 @@ extension ViewController {
             $0?.textColor = secondaryLabelColor
         }
         notesBodyLabel.textColor = labelColor
+        notesBodyLabel.font = .systemFont(ofSize: 14, weight: .medium)
         toastLabel?.backgroundColor = toastBackgroundColor
         toastLabel?.textColor = toastTextColor
 

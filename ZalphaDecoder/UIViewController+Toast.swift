@@ -1,5 +1,5 @@
 //
-//  ViewController+Toast.swift
+//  UIViewController+Toast.swift
 //  ZalphaDecoder
 //
 //  Created by 김현섭 on 5/6/26.
@@ -7,8 +7,19 @@
 
 import UIKit
 
-/// Presents short toast messages for copy, validation, and decode feedback.
-extension ViewController {
+/// Contract for view controllers that display reusable toast messages.
+protocol ToastPresenting: AnyObject where Self: UIViewController {
+    var toastLabel: ToastLabel? { get set }
+    var toastHideWorkItem: DispatchWorkItem? { get set }
+    var toastBackgroundColor: UIColor { get }
+    var toastTextColor: UIColor { get }
+}
+
+extension ViewController: ToastPresenting {}
+extension HistoryDetailViewController: ToastPresenting {}
+
+/// Shared toast presentation behavior for storyboard-backed screens.
+extension ToastPresenting {
 
     /// Shows a single temporary toast, replacing any currently visible toast.
     func showToast(_ message: String) {

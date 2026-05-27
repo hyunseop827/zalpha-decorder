@@ -11,7 +11,8 @@ import UIKit
 final class HistoryViewController: UIViewController {
     private static let historyDetailSegueIdentifier = "ShowHistoryDetail"
 
-    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    @IBOutlet weak var tableView: UITableView!
+
     private var items: [HistoryItem] = []
     private var selectedItem: HistoryItem?
 
@@ -20,6 +21,7 @@ final class HistoryViewController: UIViewController {
 
         title = "History"
         configureTableView()
+        registerForThemeChanges()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -41,19 +43,30 @@ final class HistoryViewController: UIViewController {
     }
 
     private func configureTableView() {
-        view.backgroundColor = .systemBackground
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        configureDynamicColors()
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(HistoryCell.self, forCellReuseIdentifier: HistoryCell.reuseIdentifier)
-        view.addSubview(tableView)
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 154
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 20, right: 0)
+        tableView.showsVerticalScrollIndicator = true
 
-        NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0
+        }
+    }
+
+    private func registerForThemeChanges() {
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (viewController: HistoryViewController, _) in
+            viewController.configureDynamicColors()
+            viewController.tableView.reloadData()
+        }
+    }
+
+    private func configureDynamicColors() {
+        view.backgroundColor = pageBackgroundColor
     }
 
     private func reloadHistory() {
@@ -74,6 +87,14 @@ final class HistoryViewController: UIViewController {
         label.font = .systemFont(ofSize: 17, weight: .medium)
         label.textAlignment = .center
         tableView.backgroundView = label
+    }
+
+    private var pageBackgroundColor: UIColor {
+        UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark
+                ? UIColor(red: 0.06, green: 0.06, blue: 0.07, alpha: 1)
+                : UIColor.systemGray6
+        }
     }
 }
 
@@ -98,61 +119,6 @@ extension HistoryViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         selectedItem = items[indexPath.row]
         performSegue(withIdentifier: Self.historyDetailSegueIdentifier, sender: self)
-    }
-}
-
-private final class HistoryCell: UITableViewCell {
-    static let reuseIdentifier = "HistoryCell"
-
-    private let dateLabel = UILabel()
-    private let inputLabel = UILabel()
-    private let outputLabel = UILabel()
-    private let textStackView = UIStackView()
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        configureViews()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-
-        configureViews()
-    }
-
-    func configure(with item: HistoryItem) {
-        dateLabel.text = HistoryDateFormatter.shortDateTime.string(from: item.createdAt)
-        inputLabel.text = "Input - \(item.sourceLanguage) \"\(item.inputText)\""
-        outputLabel.text = "Output - \(item.targetLanguage) \"\(item.outputText)\""
-    }
-
-    private func configureViews() {
-        accessoryType = .disclosureIndicator
-
-        dateLabel.font = .systemFont(ofSize: 13, weight: .semibold)
-        dateLabel.textColor = .secondaryLabel
-
-        [inputLabel, outputLabel].forEach {
-            $0.font = .systemFont(ofSize: 15, weight: .medium)
-            $0.textColor = .label
-            $0.numberOfLines = 2
-        }
-
-        textStackView.axis = .vertical
-        textStackView.spacing = 6
-        textStackView.translatesAutoresizingMaskIntoConstraints = false
-        textStackView.addArrangedSubview(dateLabel)
-        textStackView.addArrangedSubview(inputLabel)
-        textStackView.addArrangedSubview(outputLabel)
-        contentView.addSubview(textStackView)
-
-        NSLayoutConstraint.activate([
-            textStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            textStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            textStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
-            textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
-        ])
     }
 }
 
