@@ -13,6 +13,19 @@ enum TranslationStyle {
     case plain
     case casual
     case genZalpha
+
+    var displayName: String {
+        switch self {
+        case .formal:
+            return "Formal"
+        case .plain:
+            return "Plain"
+        case .casual:
+            return "Casual"
+        case .genZalpha:
+            return "Zalpha"
+        }
+    }
 }
 
 /// Main storyboard-backed screen controller for user actions and screen state.

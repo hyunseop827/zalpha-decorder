@@ -44,6 +44,18 @@ extension ViewController {
             )
             outputTextView.text = decodeResult.result
             notesBodyLabel.text = formattedNotes(decodeResult.notes)
+            HistoryStore.shared.save(
+                HistoryItem(
+                    id: UUID(),
+                    createdAt: Date(),
+                    sourceLanguage: resolvedSourceLanguage.displayName,
+                    targetLanguage: targetLanguage.displayName,
+                    style: selectedStyle.displayName,
+                    inputText: input,
+                    outputText: decodeResult.result,
+                    notes: decodeResult.notes
+                )
+            )
         } catch AIServiceError.blocked {
             print("Firebase AI Logic decode blocked by safety filters.")
             showToast(DecodeMessage.safetyBlocked)
@@ -88,12 +100,16 @@ extension ViewController {
     }
 
     /// Formats short Decode Notes as bullets for the notes card.
-    private func formattedNotes(_ notes: [String]) -> String {
+    private func formattedNotes(_ notes: [DecodeNote]) -> String {
         notes
             .prefix(3)
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty }
-            .map { "• \($0)" }
+            .filter { !$0.sourceExpression.isEmpty && !$0.meaning.isEmpty }
+            .map { note in
+                let translatedText = note.translatedExpression.isEmpty
+                    ? ""
+                    : ", translated as \"\(note.translatedExpression)\""
+                return "• \"\(note.sourceExpression)\" means \"\(note.meaning)\"\(translatedText)."
+            }
             .joined(separator: "\n")
     }
 }

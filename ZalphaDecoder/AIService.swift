@@ -16,10 +16,17 @@ enum AIServiceError: Error {
     case invalidResponse
 }
 
+/// Structured Decode Note that can later become a vocabulary item.
+struct DecodeNote: Codable {
+    let sourceExpression: String
+    let meaning: String
+    let translatedExpression: String
+}
+
 /// Parsed Gemini response containing the final decoded output and optional notes.
 struct DecodeResult: Decodable {
     let result: String
-    let notes: [String]
+    let notes: [DecodeNote]
 }
 
 /// Thin Firebase AI Logic wrapper that builds decode prompts and returns cleaned model text.
@@ -50,20 +57,22 @@ final class AIService {
         {
           "result": "final decoded translation",
           "notes": [
-            "short note 1",
-            "short note 2",
-            "short note 3"
+            {
+              "sourceExpression": "source slang or expression",
+              "meaning": "short meaning",
+              "translatedExpression": "translated expression used in result"
+            }
           ]
         }
         The result must contain only the final decoded translation.
-        Notes must be written in English, focus on specific source expressions, and contain at most 3 short items.
+        Notes must be written in English, focus on specific source expressions, and contain at most 3 items.
         Notes should explain only slang, idioms, profanity, meme expressions, abbreviations, or culturally loaded phrases.
         Do not explain ordinary literal words such as nouns, names, pronouns, or basic verbs.
         If a phrase mixes literal words and slang, choose the smallest meaningful slang or idiomatic expression.
         For example, in "인생 조졌다", explain only "조졌다", not "인생 조졌다".
         For example, in "야 나 진짜 인생 망했다 ㄹㅇ", explain "망했다" and "ㄹㅇ", not "인생".
-        Prefer notes in this format: "\"source expression\" means \"meaning\", translated as \"target expression\"."
-        Keep each note under 70 characters when possible.
+        Keep sourceExpression as the smallest source phrase worth saving.
+        Keep meaning and translatedExpression short.
         Do not write broad notes like "translated a colloquial expression" or "reframed emotional intensity".
         If no notes are needed, return an empty notes array.
 
@@ -106,10 +115,16 @@ final class AIService {
             return DecodeResult(
                 result: trimmedResult,
                 notes: decodedResult.notes
-                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-                    .filter { !$0.isEmpty }
+                    .map { note in
+                        DecodeNote(
+                            sourceExpression: note.sourceExpression.trimmingCharacters(in: .whitespacesAndNewlines),
+                            meaning: note.meaning.trimmingCharacters(in: .whitespacesAndNewlines),
+                            translatedExpression: note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines)
+                        )
+                    }
+                    .filter { !$0.sourceExpression.isEmpty && !$0.meaning.isEmpty }
                     .prefix(3)
-                    .map { String($0) }
+                    .map { $0 }
             )
         } catch let error as AIServiceError {
             throw error
