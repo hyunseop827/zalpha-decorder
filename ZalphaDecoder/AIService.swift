@@ -47,13 +47,15 @@ final class AIService {
         expression: String,
         meaning: String,
         sourceLanguage: String,
-        meaningLanguage: String
+        meaningLanguage: String,
+        existingExamples: [String] = []
     ) async throws -> GeneratedSlangExample {
         let prompt = promptBuilder.makeExamplePrompt(
             expression: expression,
             meaning: meaning,
             sourceLanguage: sourceLanguage,
-            meaningLanguage: meaningLanguage
+            meaningLanguage: meaningLanguage,
+            existingExamples: existingExamples
         )
         let rawText = try await textGenerator.generateRawText(prompt: prompt)
 

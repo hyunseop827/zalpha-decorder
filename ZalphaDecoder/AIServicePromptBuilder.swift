@@ -64,11 +64,13 @@ struct AIServicePromptBuilder {
         expression: String,
         meaning: String,
         sourceLanguage: String,
-        meaningLanguage: String
+        meaningLanguage: String,
+        existingExamples: [String] = []
     ) -> String {
         let trimmedMeaning = meaning.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedSourceLanguage = sourceLanguage.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedMeaningLanguage = meaningLanguage.trimmingCharacters(in: .whitespacesAndNewlines)
+        let existingExamplesInstruction = makeExistingExamplesInstruction(existingExamples)
         let meaningInstruction = trimmedMeaning.isEmpty
             ? "Use the common meaning of the expression."
             : "Meaning: \(trimmedMeaning)"
@@ -89,6 +91,8 @@ struct AIServicePromptBuilder {
         \(meaningLanguageInstruction)
         Keep each sentence easy to understand and useful for learning.
         Use the expression naturally in the sentence.
+        \(existingExamplesInstruction)
+        Make the new sentence use a different situation, subject, and wording from existing examples.
         Do not translate the expression into English unless the expression language is English.
         The sentence field must be in the expression language.
         The meaning field must be a short explanation of the sentence in the meaning language.
@@ -101,6 +105,28 @@ struct AIServicePromptBuilder {
             "meaning": "short meaning of the sentence in the meaning language"
           }
         }
+        """
+    }
+
+    private func makeExistingExamplesInstruction(_ existingExamples: [String]) -> String {
+        let examples = existingExamples
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+
+        guard !examples.isEmpty else {
+            return "There are no existing examples yet."
+        }
+
+        let formattedExamples = examples
+            .enumerated()
+            .map { index, example in "\(index + 1). \(example)" }
+            .joined(separator: "\n")
+
+        return """
+        Existing example sentences:
+        \(formattedExamples)
+        Do not repeat these sentences.
+        Do not create a near-duplicate with only tiny word changes.
         """
     }
 }

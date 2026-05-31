@@ -42,7 +42,8 @@ extension SavedSlangDetailViewController {
                 expression: item.sourceExpression,
                 meaning: item.meanings.first ?? "",
                 sourceLanguage: item.sourceLanguage,
-                meaningLanguage: item.meaningLanguage
+                meaningLanguage: item.meaningLanguage,
+                existingExamples: item.examples.map(\.sentence)
             )
             let savedExample = SavedSlangExample(
                 id: UUID(),
