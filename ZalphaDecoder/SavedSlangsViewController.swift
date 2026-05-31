@@ -23,6 +23,7 @@ final class SavedSlangsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.title = AppStrings.SavedSlang.title
         configureTableView()
         configureSearchController()
         registerForThemeChanges()

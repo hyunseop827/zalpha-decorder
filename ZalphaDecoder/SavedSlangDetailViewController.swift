@@ -37,6 +37,7 @@ final class SavedSlangDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.title = AppStrings.SavedSlang.detailTitle
         configureDynamicColors()
         configureCards()
         registerForThemeChanges()
@@ -62,10 +63,14 @@ final class SavedSlangDetailViewController: UIViewController {
         guard let item else { return }
 
         expressionLabel.text = item.sourceExpression
-        metadataLabel.text = "\(item.sourceLanguage) → \(item.meaningLanguage) · Updated \(HistoryDateFormatter.shortDateTime.string(from: item.updatedAt))"
-        generateExamplesButton.setTitle("Generate Example", for: .normal)
-        renderValues(item.meanings, in: meaningsStackView, emptyText: "No meanings saved.")
-        renderValues(item.translatedExpressions, in: translationsStackView, emptyText: "No translations saved.")
+        metadataLabel.text = AppStrings.SavedSlang.metadata(
+            sourceLanguage: item.sourceLanguage,
+            meaningLanguage: item.meaningLanguage,
+            date: HistoryDateFormatter.shortDateTime.string(from: item.updatedAt)
+        )
+        generateExamplesButton.setTitle(AppStrings.SavedSlang.generateExample, for: .normal)
+        renderValues(item.meanings, in: meaningsStackView, emptyText: AppStrings.SavedSlang.noMeanings)
+        renderValues(item.translatedExpressions, in: translationsStackView, emptyText: AppStrings.SavedSlang.noTranslations)
         renderExamples(item.examples)
     }
 }

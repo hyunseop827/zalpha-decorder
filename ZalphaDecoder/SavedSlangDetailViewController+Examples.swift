@@ -15,7 +15,7 @@ extension SavedSlangDetailViewController {
         guard let item else { return }
 
         guard item.examples.count < SavedSlangLimits.maximumExampleCount else {
-            showToast("Delete an example first.")
+            showToast(AppStrings.SavedSlang.exampleFull)
             return
         }
 
@@ -28,7 +28,7 @@ extension SavedSlangDetailViewController {
     private func generateExample() async {
         guard let item else { return }
         guard item.examples.count < SavedSlangLimits.maximumExampleCount else {
-            showToast("Delete an example first.")
+            showToast(AppStrings.SavedSlang.exampleFull)
             return
         }
 
@@ -65,33 +65,33 @@ extension SavedSlangDetailViewController {
             showToast(saveResult.message)
         } catch AIServiceError.blocked {
             print("Firebase AI Logic example generation blocked by safety filters.")
-            showToast("Examples could not be generated safely.")
+            showToast(AppStrings.SavedSlang.examplesBlocked)
         } catch AIServiceError.rateLimited {
             print("Firebase AI Logic example generation rate limited.")
-            showToast("Too many requests. Try again soon.")
+            showToast(DecodeMessage.rateLimited)
         } catch AIServiceError.networkUnavailable {
             print("Firebase AI Logic example generation failed because the network is unavailable.")
-            showToast("Check your connection and try again.")
+            showToast(DecodeMessage.networkUnavailable)
         } catch AIServiceError.serviceUnavailable, AIServiceError.configuration {
             print("Firebase AI Logic example generation unavailable.")
-            showToast("AI is temporarily unavailable.")
+            showToast(DecodeMessage.aiUnavailable)
         } catch {
             print("Firebase AI Logic example generation failed:", error)
-            showToast("Could not generate examples.")
+            showToast(AppStrings.SavedSlang.examplesGeneric)
         }
     }
 
     @objc func deleteExampleButtonTapped(_ sender: UIButton) {
         guard let item, exampleIDs.indices.contains(sender.tag) else { return }
         guard let updatedItem = SavedSlangStore.shared.deleteExample(id: exampleIDs[sender.tag], from: item.id) else {
-            showToast("Could not delete example.")
+            showToast(AppStrings.SavedSlang.couldNotDeleteExample)
             return
         }
 
         self.item = updatedItem
         renderItem()
         UINotificationFeedbackGenerator().notificationOccurred(.success)
-        showToast("Example deleted.")
+        showToast(AppStrings.SavedSlang.exampleDeleted)
     }
 
     @MainActor

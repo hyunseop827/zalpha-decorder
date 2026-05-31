@@ -21,7 +21,7 @@ struct SavedSlangPersistence {
         }
 
         do {
-            let items = try JSONDecoder().decode([SavedSlang].self, from: data)
+            let items = try JSONDecoder().decode(LossySavedSlangArray.self, from: data).items
             return items.sorted { $0.updatedAt > $1.updatedAt }
         } catch {
             print("Failed to load saved slangs:", error)
@@ -40,5 +40,61 @@ struct SavedSlangPersistence {
 
     func clear() {
         userDefaults.removeObject(forKey: storageKey)
+    }
+}
+
+private struct LossySavedSlangArray: Decodable {
+    let items: [SavedSlang]
+
+    init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        var decodedItems: [SavedSlang] = []
+
+        while !container.isAtEnd {
+            do {
+                decodedItems.append(try container.decode(SavedSlang.self))
+            } catch {
+                print("Skipped one invalid saved slang item:", error)
+                _ = try? container.decode(DiscardedSavedSlangValue.self)
+            }
+        }
+
+        items = decodedItems
+    }
+}
+
+private struct DiscardedSavedSlangValue: Decodable {
+    init(from decoder: Decoder) throws {
+        if let container = try? decoder.singleValueContainer(), container.decodeNil() {
+            return
+        }
+
+        if var container = try? decoder.unkeyedContainer() {
+            while !container.isAtEnd {
+                _ = try? container.decode(DiscardedSavedSlangValue.self)
+            }
+            return
+        }
+
+        if let container = try? decoder.container(keyedBy: DynamicCodingKey.self) {
+            for key in container.allKeys {
+                _ = try? container.decode(DiscardedSavedSlangValue.self, forKey: key)
+            }
+        }
+    }
+}
+
+private struct DynamicCodingKey: CodingKey {
+    let stringValue: String
+    let intValue: Int?
+
+    init?(stringValue: String) {
+        self.stringValue = stringValue
+        intValue = nil
+    }
+
+    init?(intValue: Int) {
+        stringValue = "\(intValue)"
+        self.intValue = intValue
     }
 }

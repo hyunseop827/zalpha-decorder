@@ -29,6 +29,7 @@ extension SavedSlangDetailViewController {
         examplesLoadingCardView.backgroundColor = AppTheme.cardBackgroundColor
         examplesLoadingCardView.layer.borderColor = AppTheme.borderColor.cgColor
         examplesLoadingIndicator.color = AppTheme.accentColor
+        examplesLoadingLabel.text = AppStrings.SavedSlang.examplesLoadingTitle
         examplesLoadingLabel.textColor = AppTheme.labelColor
 
         [meaningsCardView, translationsCardView, examplesCardView].forEach {

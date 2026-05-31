@@ -20,6 +20,7 @@ final class HistoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.title = AppStrings.History.title
         configureTableView()
         registerForThemeChanges()
     }
@@ -53,6 +54,7 @@ final class HistoryViewController: UIViewController {
 enum HistoryDateFormatter {
     static let shortDateTime: DateFormatter = {
         let formatter = DateFormatter()
+        formatter.locale = AppStrings.dateLocale
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
         return formatter

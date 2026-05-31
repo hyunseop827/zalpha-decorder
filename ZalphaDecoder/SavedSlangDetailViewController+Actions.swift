@@ -15,7 +15,7 @@ extension SavedSlangDetailViewController {
 
         UIPasteboard.general.string = expression
         UINotificationFeedbackGenerator().notificationOccurred(.success)
-        showToast("Expression copied.")
+        showToast(AppStrings.SavedSlang.expressionCopied)
     }
 
     @objc func copyExampleButtonTapped(_ sender: UIButton) {
@@ -23,19 +23,19 @@ extension SavedSlangDetailViewController {
 
         UIPasteboard.general.string = exampleCopyTexts[sender.tag]
         UINotificationFeedbackGenerator().notificationOccurred(.success)
-        showToast("Example copied.")
+        showToast(AppStrings.SavedSlang.exampleCopied)
     }
 
     @IBAction func deleteSlangButtonTapped(_ sender: UIBarButtonItem) {
         guard let item else { return }
 
         let alertController = UIAlertController(
-            title: "Delete this slang?",
+            title: AppStrings.SavedSlang.deleteTitle,
             message: "\"\(item.sourceExpression)\"",
             preferredStyle: .alert
         )
-        alertController.addAction(UIAlertAction(title: "No", style: .cancel))
-        alertController.addAction(UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.no, style: .cancel))
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.yes, style: .destructive) { [weak self] _ in
             self?.deleteAndReturnToList(item)
         })
         present(alertController, animated: true)
@@ -52,7 +52,7 @@ extension SavedSlangDetailViewController {
         listViewController?.reloadSavedSlangs()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            listViewController?.showToast("Deleted.")
+            listViewController?.showToast(AppStrings.SavedSlang.deleted)
         }
     }
 }

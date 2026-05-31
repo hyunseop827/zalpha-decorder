@@ -13,6 +13,27 @@ struct SavedSlangExample: Codable, Identifiable {
     let sentence: String
     let meaning: String
     let createdAt: Date
+
+    init(
+        id: UUID,
+        sentence: String,
+        meaning: String,
+        createdAt: Date
+    ) {
+        self.id = id
+        self.sentence = sentence
+        self.meaning = meaning
+        self.createdAt = createdAt
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        sentence = try container.decodeIfPresent(String.self, forKey: .sentence) ?? ""
+        meaning = try container.decodeIfPresent(String.self, forKey: .meaning) ?? ""
+        createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
+            ?? Date(timeIntervalSince1970: 0)
+    }
 }
 
 /// Locally saved slang or expression collected from Decode Notes.
@@ -57,17 +78,26 @@ struct SavedSlang: Codable, Identifiable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(UUID.self, forKey: .id)
-        sourceExpression = try container.decode(String.self, forKey: .sourceExpression)
-        normalizedExpression = try container.decode(String.self, forKey: .normalizedExpression)
+        let decodedSourceExpression = try container.decodeIfPresent(String.self, forKey: .sourceExpression)
+        let decodedNormalizedExpression = try container.decodeIfPresent(String.self, forKey: .normalizedExpression)
+        let fallbackExpression = decodedSourceExpression ?? decodedNormalizedExpression ?? ""
+        let decodedCreatedAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
+        let decodedUpdatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
+
+        id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        sourceExpression = fallbackExpression
+        normalizedExpression = decodedNormalizedExpression ?? SavedSlangRules.normalize(fallbackExpression)
         sourceLanguage = try container.decodeIfPresent(String.self, forKey: .sourceLanguage)
             ?? SavedSlangRules.inferredLanguageName(for: sourceExpression)
         meaningLanguage = try container.decodeIfPresent(String.self, forKey: .meaningLanguage) ?? "English"
-        meanings = try container.decode([String].self, forKey: .meanings)
-        translatedExpressions = try container.decode([String].self, forKey: .translatedExpressions)
-        examples = try container.decodeIfPresent([SavedSlangExample].self, forKey: .examples) ?? []
-        createdAt = try container.decode(Date.self, forKey: .createdAt)
-        updatedAt = try container.decode(Date.self, forKey: .updatedAt)
-        seenCount = try container.decode(Int.self, forKey: .seenCount)
+        meanings = try container.decodeIfPresent([String].self, forKey: .meanings) ?? []
+        translatedExpressions = try container.decodeIfPresent([String].self, forKey: .translatedExpressions) ?? []
+        examples = (try container.decodeIfPresent([SavedSlangExample].self, forKey: .examples) ?? [])
+            .filter { !$0.sentence.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+            .prefix(SavedSlangLimits.maximumExampleCount)
+            .map { $0 }
+        createdAt = decodedCreatedAt ?? decodedUpdatedAt ?? Date(timeIntervalSince1970: 0)
+        updatedAt = decodedUpdatedAt ?? createdAt
+        seenCount = try container.decodeIfPresent(Int.self, forKey: .seenCount) ?? 1
     }
 }

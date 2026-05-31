@@ -31,8 +31,9 @@ final class DecodeScreenModel {
 
     func swapLanguages() {
         if sourceLanguage == .auto {
-            sourceLanguage = targetLanguage
-            targetLanguage = sourceLanguage.oppositeConcreteLanguage
+            let previousTargetLanguage = targetLanguage
+            sourceLanguage = previousTargetLanguage
+            targetLanguage = previousTargetLanguage == .english ? .korean : .english
         } else {
             swap(&sourceLanguage, &targetLanguage)
         }
@@ -94,33 +95,33 @@ final class DecodeScreenModel {
 }
 
 enum DecodeMessage {
-    static let emptyInputDefault = "Enter text to decode."
-    static let safetyBlocked = "This text could not be decoded safely."
-    static let rateLimited = "Too many requests. Try again soon."
-    static let networkUnavailable = "Check your connection and try again."
-    static let aiUnavailable = "AI is temporarily unavailable."
-    static let genericError = "Could not decode. Try again."
+    static let emptyInputDefault = AppStrings.Decode.emptyInputDefault
+    static let safetyBlocked = AppStrings.Decode.safetyBlocked
+    static let rateLimited = AppStrings.Decode.rateLimited
+    static let networkUnavailable = AppStrings.Decode.networkUnavailable
+    static let aiUnavailable = AppStrings.Decode.aiUnavailable
+    static let genericError = AppStrings.Decode.genericError
 
     static let emptyInputVariants = [
-        "Bro, it's empty.",
-        "There is nothing to decode.",
-        "Bro, this ain't tuff. 🥀",
-        "No text? We are cooked.",
-        "Is bro okay?",
-        "Type something plz 🙏",
-        "No words, no decode.",
-        "Skibidi Toilet",
-        "I mog you btw...",
-        "Messi or Ronaldo ???",
-        "Zalpha needs actual text, bro.",
-        "Idc at this moment",
-        "This is sub3 behavior",
-        "Never expected someone doing this",
-        "you win bro",
-        "go sleep plz",
-        "Enter text to decode.",
-        "Enter text to decode.",
-        "Enter text to decode.",
-        "touch grass plz"
+        AppStrings.localized("decode.empty.variant.01"),
+        AppStrings.localized("decode.empty.variant.02"),
+        AppStrings.localized("decode.empty.variant.03"),
+        AppStrings.localized("decode.empty.variant.04"),
+        AppStrings.localized("decode.empty.variant.05"),
+        AppStrings.localized("decode.empty.variant.06"),
+        AppStrings.localized("decode.empty.variant.07"),
+        AppStrings.localized("decode.empty.variant.08"),
+        AppStrings.localized("decode.empty.variant.09"),
+        AppStrings.localized("decode.empty.variant.10"),
+        AppStrings.localized("decode.empty.variant.11"),
+        AppStrings.localized("decode.empty.variant.12"),
+        AppStrings.localized("decode.empty.variant.13"),
+        AppStrings.localized("decode.empty.variant.14"),
+        AppStrings.localized("decode.empty.variant.15"),
+        AppStrings.localized("decode.empty.variant.16"),
+        AppStrings.localized("decode.empty.variant.17"),
+        AppStrings.localized("decode.empty.variant.18"),
+        AppStrings.localized("decode.empty.variant.19"),
+        AppStrings.localized("decode.empty.variant.20")
     ]
 }

@@ -14,12 +14,12 @@ extension HistoryViewController {
         guard !items.isEmpty else { return }
 
         let alertController = UIAlertController(
-            title: "Delete all history?",
-            message: "This cannot be undone.",
+            title: AppStrings.History.deleteAllTitle,
+            message: AppStrings.History.deleteMessage,
             preferredStyle: .alert
         )
-        alertController.addAction(UIAlertAction(title: "No", style: .cancel))
-        alertController.addAction(UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.no, style: .cancel))
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.yes, style: .destructive) { [weak self] _ in
             HistoryStore.shared.clear()
             self?.reloadHistory()
             UINotificationFeedbackGenerator().notificationOccurred(.success)
@@ -29,12 +29,12 @@ extension HistoryViewController {
 
     func confirmDelete(_ item: HistoryItem) {
         let alertController = UIAlertController(
-            title: "Delete this history?",
+            title: AppStrings.History.deleteOneTitle,
             message: "\"\(item.inputText)\"",
             preferredStyle: .alert
         )
-        alertController.addAction(UIAlertAction(title: "No", style: .cancel))
-        alertController.addAction(UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.no, style: .cancel))
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.yes, style: .destructive) { [weak self] _ in
             HistoryStore.shared.delete(id: item.id)
             self?.reloadHistory()
             UINotificationFeedbackGenerator().notificationOccurred(.success)

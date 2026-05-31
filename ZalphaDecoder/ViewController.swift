@@ -57,6 +57,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         registerForThemeChanges()
         updateStyleSelection()
         updateLanguageInterface()
+        updateLocalizedInterface()
         updateCharacterCount()
     }
 
@@ -128,13 +129,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
         UIPasteboard.general.string = output
         UINotificationFeedbackGenerator().notificationOccurred(.success)
-        showToast("Saved to clipboard.")
+        showToast(AppStrings.Main.outputCopied)
     }
 
     /// Opens the current decode result in the History Detail screen.
     @objc func notesCardTapped() {
         guard screenModel.latestHistoryItem != nil else {
-            showToast("Nothing to show yet.")
+            showToast(AppStrings.Main.noCurrentDecode)
             return
         }
 
@@ -183,16 +184,30 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             options: DecodeLanguage.targetOptions,
             changesSource: false
         )
-        inputLanguageLabel.text = "Input - \(screenModel.sourceLanguage.displayName)"
-        outputLanguageLabel.text = "Output - \(screenModel.targetLanguage.displayName)"
+        inputLanguageLabel.text = AppStrings.Main.inputTitle(screenModel.sourceLanguage.localizedDisplayName)
+        outputLanguageLabel.text = AppStrings.Main.outputTitle(screenModel.targetLanguage.localizedDisplayName)
+        updateLocalizedInterface()
+    }
+
+    /// Applies localized runtime strings that are not purely data-driven.
+    func updateLocalizedInterface() {
+        navigationItem.title = AppStrings.Main.title
+        styleLabel.text = AppStrings.Main.style
+        cleanStyleButton.setTitle(TranslationStyle.formal.localizedDisplayName, for: .normal)
+        plainStyleButton.setTitle(TranslationStyle.plain.localizedDisplayName, for: .normal)
+        casualStyleButton.setTitle(TranslationStyle.casual.localizedDisplayName, for: .normal)
+        genZalphaStyleButton.setTitle(TranslationStyle.genZalpha.localizedDisplayName, for: .normal)
+        decodeButton.setTitle(AppStrings.Main.decodeButton, for: .normal)
+        notesTitleLabel.text = AppStrings.Main.notesTitle
+        loadingTitleLabel.text = AppStrings.Decode.loadingTitle
     }
 
     /// Applies the current language name and shared icon styling to a language button.
     private func configureLanguageButton(_ button: UIButton, language: DecodeLanguage) {
-        button.setTitle(language.displayName, for: .normal)
+        button.setTitle(language.localizedDisplayName, for: .normal)
         button.setTitleColor(labelColor, for: .normal)
         button.tintColor = accentColor
-        button.accessibilityLabel = language.displayName
+        button.accessibilityLabel = language.localizedDisplayName
     }
 
     /// Builds the source or target language menu from the available language options.
@@ -203,7 +218,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     ) -> UIMenu {
         let actions = options.map { language in
             UIAction(
-                title: language.displayName,
+                title: language.localizedDisplayName,
                 state: language == selectedLanguage ? .on : .off
             ) { [weak self] _ in
                 self?.setLanguage(language, changesSource: changesSource)

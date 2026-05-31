@@ -38,7 +38,7 @@ extension HistoryViewController {
         }
 
         let label = UILabel()
-        label.text = "No history yet."
+        label.text = AppStrings.History.noHistory
         label.textColor = AppTheme.secondaryLabelColor
         label.font = .systemFont(ofSize: 17, weight: .medium)
         label.textAlignment = .center

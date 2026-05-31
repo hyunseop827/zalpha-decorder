@@ -62,6 +62,8 @@ extension ToastPresenting {
         label.textColor = toastTextColor
         label.font = .systemFont(ofSize: 14, weight: .semibold)
         label.textAlignment = .center
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
         AppTheme.applySurfaceStyle(
             to: label,
             backgroundColor: toastBackgroundColor,

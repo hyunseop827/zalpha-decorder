@@ -10,6 +10,9 @@ enum DecodeLanguage: CaseIterable {
     case auto
     case english
     case korean
+    case japanese
+    case spanish
+    case russian
 
     var displayName: String {
         switch self {
@@ -19,13 +22,32 @@ enum DecodeLanguage: CaseIterable {
             return "English"
         case .korean:
             return "한국어"
+        case .japanese:
+            return "Japanese"
+        case .spanish:
+            return "Spanish"
+        case .russian:
+            return "Russian"
         }
     }
 
-    var oppositeConcreteLanguage: DecodeLanguage {
-        self == .english ? .korean : .english
+    var localizedDisplayName: String {
+        switch self {
+        case .auto:
+            return AppStrings.Language.auto
+        case .english:
+            return AppStrings.Language.english
+        case .korean:
+            return AppStrings.Language.korean
+        case .japanese:
+            return AppStrings.Language.japanese
+        case .spanish:
+            return AppStrings.Language.spanish
+        case .russian:
+            return AppStrings.Language.russian
+        }
     }
 
-    static let sourceOptions: [DecodeLanguage] = [.auto, .english, .korean]
-    static let targetOptions: [DecodeLanguage] = [.english, .korean]
+    static let sourceOptions: [DecodeLanguage] = [.auto, .english, .korean, .japanese, .spanish, .russian]
+    static let targetOptions: [DecodeLanguage] = [.english, .korean, .japanese, .spanish, .russian]
 }

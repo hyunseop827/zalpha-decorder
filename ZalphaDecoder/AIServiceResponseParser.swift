@@ -6,7 +6,7 @@
 import Foundation
 
 struct AIServiceResponseParser {
-    func parseDecodeResult(from rawText: String, targetLanguage: String) throws -> DecodeResult {
+    func parseDecodeResult(from rawText: String, sourceText: String, targetLanguage: String) throws -> DecodeResult {
         guard let jsonText = extractJSONObject(from: rawText),
               let data = jsonText.data(using: .utf8) else {
             print("Firebase AI Logic invalid JSON response:", rawText)
@@ -23,7 +23,8 @@ struct AIServiceResponseParser {
 
             return DecodeResult(
                 result: trimmedResult,
-                notes: decodedResult.notes
+                notes: validatedNotes(
+                    decodedResult.notes
                     .map { note in
                         let meaningLanguage = (note.meaningLanguage ?? "")
                             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -34,9 +35,11 @@ struct AIServiceResponseParser {
                             translatedExpression: note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines)
                         )
                     }
-                    .filter { !$0.sourceExpression.isEmpty && !$0.meaning.isEmpty }
-                    .prefix(5)
-                    .map { $0 }
+                    .filter { !$0.sourceExpression.isEmpty && !$0.meaning.isEmpty },
+                    sourceText: sourceText
+                )
+                .prefix(5)
+                .map { $0 }
             )
         } catch let error as AIServiceError {
             throw error
@@ -109,6 +112,79 @@ struct AIServiceResponseParser {
 
         return nil
     }
+
+    private func validatedNotes(_ notes: [DecodeNote], sourceText: String) -> [DecodeNote] {
+        let normalizedSourceText = normalizeForContainment(sourceText)
+        var seenExpressions = Set<String>()
+        let validNotes = notes.filter { note in
+            let normalizedExpression = normalizeForContainment(note.sourceExpression)
+
+            guard !normalizedExpression.isEmpty,
+                  !isTooBroadExpression(note.sourceExpression, sourceText: sourceText),
+                  !isGenericExplanation(note.meaning) else {
+                return false
+            }
+
+            return seenExpressions.insert(normalizedExpression).inserted
+        }
+
+        let matchingNotes = validNotes.filter {
+            normalizedSourceText.contains(normalizeForContainment($0.sourceExpression))
+        }
+
+        return matchingNotes.isEmpty ? validNotes : matchingNotes
+    }
+
+    private func isTooBroadExpression(_ expression: String, sourceText: String) -> Bool {
+        let normalizedExpression = normalizeForContainment(expression)
+        let normalizedSourceText = normalizeForContainment(sourceText)
+        let sourceHasMultipleChunks = sourceText
+            .split(whereSeparator: { $0.isWhitespace || $0.isNewline })
+            .count > 1
+        let expressionWordCount = expression
+            .split(whereSeparator: { $0.isWhitespace || $0.isNewline })
+            .count
+        let sourceCount = normalizedSourceText.count
+        let expressionCount = normalizedExpression.count
+
+        if expressionWordCount > 4 {
+            return true
+        }
+
+        if expressionCount > 24 {
+            return true
+        }
+
+        if normalizedExpression == normalizedSourceText {
+            return sourceHasMultipleChunks || sourceCount > 6
+        }
+
+        return sourceCount >= 8
+            && expressionCount >= Int(Double(sourceCount) * 0.72)
+    }
+
+    private func isGenericExplanation(_ meaning: String) -> Bool {
+        let normalizedMeaning = meaning.lowercased()
+        let genericFragments = [
+            "colloquial expression",
+            "emotional intensity",
+            "formal statement",
+            "professional or serious",
+            "serious communication",
+            "reframed",
+            "translated the"
+        ]
+
+        return genericFragments.contains { normalizedMeaning.contains($0) }
+    }
+
+    private func normalizeForContainment(_ value: String) -> String {
+        value
+            .lowercased()
+            .components(separatedBy: CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters))
+            .filter { !$0.isEmpty }
+            .joined()
+    }
 }
 
 private struct GeneratedExampleResponse: Decodable {
@@ -118,6 +194,17 @@ private struct GeneratedExampleResponse: Decodable {
 private struct RawDecodeResult: Decodable {
     let result: String
     let notes: [RawDecodeNote]
+
+    private enum CodingKeys: String, CodingKey {
+        case result
+        case notes
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        result = try container.decode(String.self, forKey: .result)
+        notes = try container.decodeIfPresent([RawDecodeNote].self, forKey: .notes) ?? []
+    }
 }
 
 private struct RawDecodeNote: Decodable {

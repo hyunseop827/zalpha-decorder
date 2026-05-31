@@ -37,9 +37,13 @@ final class AIService {
             targetLanguage: targetLanguage,
             style: style
         )
-        let rawText = try await textGenerator.generateRawText(prompt: prompt)
+        let rawText = try await textGenerator.generateRawText(prompt: prompt, task: .decode)
 
-        return try responseParser.parseDecodeResult(from: rawText, targetLanguage: targetLanguage)
+        return try responseParser.parseDecodeResult(
+            from: rawText,
+            sourceText: text,
+            targetLanguage: targetLanguage
+        )
     }
 
     /// Generates one short example sentence for one saved slang expression.
@@ -57,7 +61,7 @@ final class AIService {
             meaningLanguage: meaningLanguage,
             existingExamples: existingExamples
         )
-        let rawText = try await textGenerator.generateRawText(prompt: prompt)
+        let rawText = try await textGenerator.generateRawText(prompt: prompt, task: .example)
 
         return try responseParser.parseGeneratedExample(from: rawText)
     }

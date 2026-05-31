@@ -13,7 +13,7 @@ extension HistoryDetailViewController {
     /// Renders up to five saved notes into the notes stack.
     func renderNotes(_ notes: [DecodeNote]) {
         guard !notes.isEmpty else {
-            emptyNotesLabel?.text = "No notes for this decode."
+            emptyNotesLabel?.text = AppStrings.History.noNotes
             emptyNotesLabel?.isHidden = false
             return
         }
@@ -48,7 +48,7 @@ extension HistoryDetailViewController {
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
         contentStackView.addArrangedSubview(
             makeNoteField(
-                title: "Expression",
+                title: AppStrings.History.expression,
                 value: note.sourceExpression,
                 valueColor: AppTheme.accentColor,
                 valueFont: .systemFont(ofSize: 16, weight: .semibold)
@@ -56,7 +56,7 @@ extension HistoryDetailViewController {
         )
         contentStackView.addArrangedSubview(
             makeNoteField(
-                title: "Meaning",
+                title: AppStrings.History.meaning,
                 value: note.meaning,
                 valueColor: AppTheme.labelColor,
                 valueFont: .systemFont(ofSize: 15, weight: .medium)
@@ -66,7 +66,7 @@ extension HistoryDetailViewController {
         if !note.translatedExpression.isEmpty {
             contentStackView.addArrangedSubview(
                 makeNoteField(
-                    title: "Translated As",
+                    title: AppStrings.History.translatedAs,
                     value: note.translatedExpression,
                     valueColor: AppTheme.labelColor,
                     valueFont: .systemFont(ofSize: 15, weight: .medium)
@@ -110,7 +110,7 @@ extension HistoryDetailViewController {
         let spacerView = UIView()
         let button = UIButton(type: .system)
         button.configuration = nil
-        button.setTitle("Save", for: .normal)
+        button.setTitle(AppStrings.History.save, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
         AppTheme.applySurfaceStyle(
@@ -139,12 +139,12 @@ extension HistoryDetailViewController {
     private func confirmSave(_ note: DecodeNote) {
         let message = note.sourceExpression.isEmpty ? nil : "\"\(note.sourceExpression)\""
         let alertController = UIAlertController(
-            title: "Save this note?",
+            title: AppStrings.History.saveTitle,
             message: message,
             preferredStyle: .alert
         )
-        alertController.addAction(UIAlertAction(title: "No", style: .cancel))
-        alertController.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.no, style: .cancel))
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.yes, style: .default) { [weak self] _ in
             let result = SavedSlangStore.shared.save(
                 note,
                 sourceLanguage: self?.item?.sourceLanguage ?? "Unknown",

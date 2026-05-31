@@ -7,21 +7,53 @@ import FirebaseAILogic
 import Foundation
 
 internal protocol AITextGenerating {
-    func generateRawText(prompt: String) async throws -> String
+    func generateRawText(prompt: String, task: AITextGenerationTask) async throws -> String
+}
+
+enum AITextGenerationTask {
+    case decode
+    case example
 }
 
 final class FirebaseAITextClient: AITextGenerating {
-    private lazy var model = FirebaseAI.firebaseAI(backend: .googleAI()).generativeModel(
+    private let firebaseAI = FirebaseAI.firebaseAI(backend: .googleAI())
+
+    private lazy var decodeModel = firebaseAI.generativeModel(
         modelName: "gemini-3.1-flash-lite",
-        safetySettings: [
-            SafetySetting(harmCategory: .harassment, threshold: .blockOnlyHigh)
-        ]
+        generationConfig: Self.decodeGenerationConfig,
+        safetySettings: safetySettings
     )
 
-    func generateRawText(prompt: String) async throws -> String {
+    private lazy var exampleModel = firebaseAI.generativeModel(
+        modelName: "gemini-3.1-flash-lite",
+        generationConfig: Self.exampleGenerationConfig,
+        safetySettings: safetySettings
+    )
+
+    private let safetySettings = [
+        SafetySetting(harmCategory: .harassment, threshold: .blockOnlyHigh)
+    ]
+
+    private static let decodeGenerationConfig = GenerationConfig(
+        temperature: 0.35,
+        topP: 0.85,
+        candidateCount: 1,
+        maxOutputTokens: 700,
+        responseMIMEType: "application/json"
+    )
+
+    private static let exampleGenerationConfig = GenerationConfig(
+        temperature: 0.85,
+        topP: 0.95,
+        candidateCount: 1,
+        maxOutputTokens: 220,
+        responseMIMEType: "application/json"
+    )
+
+    func generateRawText(prompt: String, task: AITextGenerationTask) async throws -> String {
         let response: GenerateContentResponse
         do {
-            response = try await model.generateContent(prompt)
+            response = try await model(for: task).generateContent(prompt)
         } catch GenerateContentError.promptBlocked {
             throw AIServiceError.blocked
         } catch GenerateContentError.responseStoppedEarly {
@@ -46,6 +78,15 @@ final class FirebaseAITextClient: AITextGenerating {
         }
 
         return rawText
+    }
+
+    private func model(for task: AITextGenerationTask) -> GenerativeModel {
+        switch task {
+        case .decode:
+            return decodeModel
+        case .example:
+            return exampleModel
+        }
     }
 
     private func classifyInternalError(_ error: Error) -> AIServiceError {

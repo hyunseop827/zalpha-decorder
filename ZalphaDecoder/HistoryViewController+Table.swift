@@ -36,7 +36,7 @@ extension HistoryViewController: UITableViewDataSource, UITableViewDelegate {
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
         let item = items[indexPath.row]
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
+        let deleteAction = UIContextualAction(style: .destructive, title: AppStrings.History.deleteAction) { [weak self] _, _, completion in
             self?.confirmDelete(item)
             completion(false)
         }

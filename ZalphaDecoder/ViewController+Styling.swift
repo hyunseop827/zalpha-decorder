@@ -170,13 +170,14 @@ extension ViewController {
         notesCardView.addGestureRecognizer(tapGesture)
         notesCardView.isUserInteractionEnabled = true
         notesCardView.accessibilityTraits.insert(.button)
-        notesCardView.accessibilityLabel = "Decode Notes Detail"
+        notesCardView.accessibilityLabel = AppStrings.Decode.notesDetailAccessibilityLabel
     }
 
     /// Configures the full-screen blocking overlay shown during Decode requests.
     func configureLoadingOverlay() {
         loadingOverlayView.isHidden = true
         loadingOverlayView.alpha = 0
+        loadingTitleLabel.text = AppStrings.Decode.loadingTitle
         loadingActivityIndicator.stopAnimating()
 
         loadingCardView?.layer.cornerRadius = 16

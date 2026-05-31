@@ -17,13 +17,13 @@ enum SavedSlangSaveResult {
     var message: String {
         switch self {
         case .saved:
-            return "Saved."
+            return AppStrings.SavedSlang.saved
         case .updated:
-            return "Already saved. Updated."
+            return AppStrings.SavedSlang.updated
         case .duplicate:
-            return "Already saved."
+            return AppStrings.SavedSlang.duplicate
         case .invalid:
-            return "Could not save this note."
+            return AppStrings.SavedSlang.invalid
         }
     }
 }
@@ -39,13 +39,13 @@ enum SavedSlangExampleSaveResult {
     var message: String {
         switch self {
         case .saved:
-            return "Example added."
+            return AppStrings.SavedSlang.exampleAdded
         case .duplicate:
-            return "Example already exists. Try again."
+            return AppStrings.SavedSlang.exampleDuplicate
         case .full:
-            return "Delete an example first."
+            return AppStrings.SavedSlang.exampleFull
         case .invalid, .notFound:
-            return "Could not save example."
+            return AppStrings.SavedSlang.exampleInvalid
         }
     }
 }

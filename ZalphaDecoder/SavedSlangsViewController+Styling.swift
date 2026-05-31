@@ -36,7 +36,7 @@ extension SavedSlangsViewController {
         }
 
         let label = UILabel()
-        label.text = isSearching ? "No matching slangs." : "No saved slangs yet."
+        label.text = isSearching ? AppStrings.SavedSlang.noMatching : AppStrings.SavedSlang.noSaved
         label.textColor = AppTheme.secondaryLabelColor
         label.font = .systemFont(ofSize: 17, weight: .medium)
         label.textAlignment = .center

@@ -25,7 +25,7 @@ extension ViewController {
         }
 
         guard let resolvedSourceLanguage = resolvedSourceLanguage(for: input) else {
-            showToast("Could not detect input language.")
+            showToast(AppStrings.Decode.couldNotDetectLanguage)
             return
         }
 
@@ -113,10 +113,11 @@ extension ViewController {
             .prefix(5)
             .filter { !$0.sourceExpression.isEmpty && !$0.meaning.isEmpty }
             .map { note in
-                let translatedText = note.translatedExpression.isEmpty
-                    ? ""
-                    : ", translated as \"\(note.translatedExpression)\""
-                return "• \"\(note.sourceExpression)\" means \"\(note.meaning)\"\(translatedText)."
+                AppStrings.Decode.noteLine(
+                    sourceExpression: note.sourceExpression,
+                    meaning: note.meaning,
+                    translatedExpression: note.translatedExpression
+                )
             }
             .joined(separator: "\n")
 

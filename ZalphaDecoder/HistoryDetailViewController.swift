@@ -38,6 +38,7 @@ final class HistoryDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.title = AppStrings.History.detailTitle
         configureStoryboardViews()
         registerForThemeChanges()
         renderItem()
@@ -54,19 +55,19 @@ final class HistoryDetailViewController: UIViewController {
 
         guard let item = item else {
             metadataLabel?.text = ""
-            inputTitleLabel?.text = "Input"
+            inputTitleLabel?.text = AppStrings.History.input
             inputBodyLabel?.text = ""
-            outputTitleLabel?.text = "Output"
+            outputTitleLabel?.text = AppStrings.History.output
             outputBodyLabel?.text = ""
-            emptyNotesLabel?.text = "No history item selected."
+            emptyNotesLabel?.text = AppStrings.History.noItemSelected
             emptyNotesLabel?.isHidden = false
             return
         }
 
         metadataLabel?.text = "\(HistoryDateFormatter.shortDateTime.string(from: item.createdAt)) · \(item.style)"
-        inputTitleLabel?.text = "Input - \(item.sourceLanguage)"
+        inputTitleLabel?.text = AppStrings.History.inputTitle(item.sourceLanguage)
         inputBodyLabel?.text = item.inputText
-        outputTitleLabel?.text = "Output - \(item.targetLanguage)"
+        outputTitleLabel?.text = AppStrings.History.outputTitle(item.targetLanguage)
         outputBodyLabel?.text = item.outputText
         renderNotes(item.notes)
     }

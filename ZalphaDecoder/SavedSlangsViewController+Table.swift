@@ -36,13 +36,13 @@ extension SavedSlangsViewController: UITableViewDataSource, UITableViewDelegate 
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
         let item = displayedItems[indexPath.row]
-        let copyAction = UIContextualAction(style: .normal, title: "Copy") { [weak self] _, _, completion in
+        let copyAction = UIContextualAction(style: .normal, title: AppStrings.SavedSlang.copyAction) { [weak self] _, _, completion in
             self?.copyExpression(from: item)
             completion(true)
         }
         copyAction.backgroundColor = accentColor
 
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
+        let deleteAction = UIContextualAction(style: .destructive, title: AppStrings.SavedSlang.deleteAction) { [weak self] _, _, completion in
             self?.confirmDelete(item)
             completion(false)
         }
@@ -55,21 +55,21 @@ extension SavedSlangsViewController: UITableViewDataSource, UITableViewDelegate 
     private func copyExpression(from item: SavedSlang) {
         UIPasteboard.general.string = item.sourceExpression
         UINotificationFeedbackGenerator().notificationOccurred(.success)
-        showToast("Expression copied.")
+        showToast(AppStrings.SavedSlang.expressionCopied)
     }
 
     private func confirmDelete(_ item: SavedSlang) {
         let alertController = UIAlertController(
-            title: "Delete this slang?",
+            title: AppStrings.SavedSlang.deleteTitle,
             message: "\"\(item.sourceExpression)\"",
             preferredStyle: .alert
         )
-        alertController.addAction(UIAlertAction(title: "No", style: .cancel))
-        alertController.addAction(UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.no, style: .cancel))
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.yes, style: .destructive) { [weak self] _ in
             SavedSlangStore.shared.delete(id: item.id)
             self?.reloadSavedSlangs()
             UINotificationFeedbackGenerator().notificationOccurred(.success)
-            self?.showToast("Deleted.")
+            self?.showToast(AppStrings.SavedSlang.deleted)
         })
         present(alertController, animated: true)
     }

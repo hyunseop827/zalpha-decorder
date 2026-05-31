@@ -68,7 +68,9 @@ final class SavedSlangStore {
         var item = items[existingIndex]
         let didAddMeaning = SavedSlangRules.appendUnique(meaning, to: &item.meanings)
         let didAddTranslatedExpression = SavedSlangRules.appendUnique(translatedExpression, to: &item.translatedExpressions)
-        item.updatedAt = now
+        if didAddMeaning || didAddTranslatedExpression {
+            item.updatedAt = now
+        }
         item.seenCount += 1
         items[existingIndex] = item
         persistence.save(items)
@@ -103,7 +105,6 @@ final class SavedSlangStore {
             return .invalid
         }
 
-        item.updatedAt = Date()
         items[index] = item
         persistence.save(items)
         return .saved(item)
@@ -130,7 +131,6 @@ final class SavedSlangStore {
         var item = items[index]
         item.examples.removeAll { $0.id == exampleID }
         item.examples = Array(item.examples.prefix(SavedSlangLimits.maximumExampleCount))
-        item.updatedAt = Date()
         items[index] = item
         persistence.save(items)
         return item

@@ -13,7 +13,7 @@ extension SavedSlangsViewController: UISearchResultsUpdating {
     func configureSearchController() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search saved slangs"
+        searchController.searchBar.placeholder = AppStrings.SavedSlang.searchPlaceholder
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = true
