@@ -62,6 +62,15 @@ extension ViewController {
         } catch AIServiceError.rateLimited {
             print("Firebase AI Logic decode rate limited.")
             showToast(DecodeMessage.rateLimited)
+        } catch AIServiceError.networkUnavailable {
+            print("Firebase AI Logic decode failed because the network is unavailable.")
+            showToast(DecodeMessage.networkUnavailable)
+        } catch AIServiceError.serviceUnavailable {
+            print("Firebase AI Logic decode service unavailable.")
+            showToast(DecodeMessage.aiUnavailable)
+        } catch AIServiceError.configuration {
+            print("Firebase AI Logic decode configuration error.")
+            showToast(DecodeMessage.aiUnavailable)
         } catch AIServiceError.emptyResponse {
             print("Firebase AI Logic decode returned an empty response.")
             showToast(DecodeMessage.genericError)
@@ -141,8 +150,10 @@ extension ViewController {
 
 private enum DecodeMessage {
     static let emptyInputDefault = "Enter text to decode."
-    static let safetyBlocked = "This text was blocked by safety filters."
-    static let rateLimited = "Rate limit reached. Try again soon."
+    static let safetyBlocked = "This text could not be decoded safely."
+    static let rateLimited = "Too many requests. Try again soon."
+    static let networkUnavailable = "Check your connection and try again."
+    static let aiUnavailable = "AI is temporarily unavailable."
     static let genericError = "Could not decode. Try again."
 
     static let emptyInputVariants = [
