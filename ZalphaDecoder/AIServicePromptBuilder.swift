@@ -6,7 +6,13 @@
 import Foundation
 
 struct AIServicePromptBuilder {
-    func makeDecodePrompt(text: String, sourceLanguage: String, targetLanguage: String, style: TranslationStyle) -> String {
+    func makeDecodePrompt(
+        text: String,
+        sourceLanguage: String,
+        targetLanguage: String,
+        noteLanguage: String,
+        style: TranslationStyle
+    ) -> String {
         let taskInstruction = sourceLanguage == targetLanguage
             ? "Rewrite or decode the following text in \(targetLanguage) using the selected style."
             : "Translate or decode the following text from \(sourceLanguage) to \(targetLanguage)."
@@ -32,16 +38,16 @@ struct AIServicePromptBuilder {
           "notes": [
             {
               "sourceExpression": "source slang or expression",
-              "meaning": "short meaning",
-              "meaningLanguage": "\(targetLanguage)",
+              "meaning": "short meaning in \(noteLanguage)",
+              "meaningLanguage": "\(noteLanguage)",
               "translatedExpression": "translated expression used in result"
             }
           ]
         }
         The result must contain only the final decoded translation.
         Notes must focus on specific source expressions and contain at most 5 items.
-        Every note.meaning must be written in \(targetLanguage).
-        Every note.meaningLanguage must be exactly "\(targetLanguage)".
+        Every note.meaning must be written in \(noteLanguage), matching the app UI language.
+        Every note.meaningLanguage must be exactly "\(noteLanguage)".
         Keep note.sourceExpression in the original source wording.
         Keep note.translatedExpression in \(targetLanguage).
         Do not force 5 notes. Return fewer notes when there are fewer meaningful expressions.
@@ -52,6 +58,8 @@ struct AIServicePromptBuilder {
         For example, in "인생 조졌다", explain only "조졌다", not "인생" or "인생 조졌다".
         For example, in "야 나 진짜 인생 망했다 ㄹㅇ", explain "망했다" and "ㄹㅇ", not "인생".
         For Korean emotional slang, isolate the slang verb or marker: "조졌다", "망했다", "ㄹㅇ", "개", "찐" when relevant.
+        For Korean intensifier "개-" as in "개망했다", explain it as "엄청/완전" when noteLanguage is Korean, or "very/extremely/totally" when noteLanguage is English.
+        When translating Korean "개-" into English, prefer translatedExpression like "totally", "really", or "so"; do not use "actually" unless it truly means actual/really in context.
         Keep sourceExpression as the smallest source phrase worth saving.
         Keep meaning and translatedExpression short.
         Do not write broad notes like "translated a colloquial expression" or "reframed emotional intensity".

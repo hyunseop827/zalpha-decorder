@@ -55,6 +55,7 @@ enum AppStrings {
         static let couldNotDetectLanguage = AppStrings.localized("decode.error.detectLanguage")
         static let loadingTitle = AppStrings.localized("decode.loading.title")
         static let notesDetailAccessibilityLabel = AppStrings.localized("decode.notes.detail.accessibility")
+        static let noteLanguage = AppStrings.localized("decode.note.language")
 
         static func sourceLanguageMismatch(_ language: String) -> String {
             AppStrings.format("decode.error.sourceMismatch", language)
@@ -77,6 +78,7 @@ enum AppStrings {
         static let deleteAllTitle = AppStrings.localized("history.deleteAll.title")
         static let deleteOneTitle = AppStrings.localized("history.deleteOne.title")
         static let deleteMessage = AppStrings.localized("history.delete.message")
+        static let deleted = AppStrings.localized("history.deleted")
         static let input = AppStrings.localized("history.input")
         static let output = AppStrings.localized("history.output")
         static let noItemSelected = AppStrings.localized("history.detail.noItem")
@@ -134,7 +136,10 @@ enum AppStrings {
         static let expressionCopied = AppStrings.localized("savedSlang.expression.copied")
         static let exampleCopied = AppStrings.localized("savedSlang.example.copied")
         static let deleteTitle = AppStrings.localized("savedSlang.delete.title")
+        static let deleteAllTitle = AppStrings.localized("savedSlang.deleteAll.title")
+        static let deleteAllMessage = AppStrings.localized("savedSlang.deleteAll.message")
         static let deleted = AppStrings.localized("savedSlang.deleted")
+        static let allDeleted = AppStrings.localized("savedSlang.allDeleted")
         static let copyAction = AppStrings.localized("savedSlang.action.copy")
         static let deleteAction = AppStrings.localized("savedSlang.action.delete")
         static let noExamples = AppStrings.localized("savedSlang.examples.empty")
@@ -162,5 +167,38 @@ enum AppStrings {
         static let japanese = AppStrings.localized("language.japanese")
         static let spanish = AppStrings.localized("language.spanish")
         static let russian = AppStrings.localized("language.russian")
+    }
+}
+
+extension AppStrings.Decode {
+    static func noteLine(
+        sourceExpression: String,
+        meaning: String,
+        meaningLanguage: String,
+        translatedExpression: String
+    ) -> String {
+        if isKoreanLanguageName(meaningLanguage) {
+            guard !translatedExpression.isEmpty else {
+                return "• \"\(sourceExpression)\"는 \"\(meaning)\"라는 뜻입니다."
+            }
+
+            return "• \"\(sourceExpression)\"는 \"\(meaning)\"라는 뜻이고, \"\(translatedExpression)\"로 번역했습니다."
+        }
+
+        guard !translatedExpression.isEmpty else {
+            return "• \"\(sourceExpression)\" means \"\(meaning)\"."
+        }
+
+        return "• \"\(sourceExpression)\" means \"\(meaning)\", translated as \"\(translatedExpression)\"."
+    }
+
+    private static func isKoreanLanguageName(_ languageName: String) -> Bool {
+        let normalizedLanguageName = languageName
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+
+        return normalizedLanguageName == "한국어"
+            || normalizedLanguageName == "korean"
+            || normalizedLanguageName == "ko"
     }
 }

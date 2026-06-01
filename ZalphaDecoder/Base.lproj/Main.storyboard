@@ -1057,6 +1057,17 @@
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
+                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ev-Pw-eJG" userLabel="Save All Notes Button">
+                                                                <rect key="frame" x="282" y="10" width="82" height="32"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="32" id="1vR-Cc-zrO"/>
+                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="82" id="FCK-SO-Wln"/>
+                                                                </constraints>
+                                                                <state key="normal" title="Save All"/>
+                                                                <connections>
+                                                                    <action selector="confirmSaveAllNotes:" destination="uZP-n6-ncR" eventType="touchUpInside" id="qdt-lf-CgL"/>
+                                                                </connections>
+                                                            </button>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="XcZ-74-i4m" userLabel="notesStackView">
                                                                 <rect key="frame" x="16" y="48.333333333333364" width="348" height="78.333333333333314"/>
                                                                 <subviews>
@@ -1072,8 +1083,10 @@
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstItem="XcZ-74-i4m" firstAttribute="leading" secondItem="ICN-AH-rgb" secondAttribute="leading" constant="16" id="5Ko-bf-EOH"/>
+                                                            <constraint firstItem="3Ev-Pw-eJG" firstAttribute="centerY" secondItem="kJn-NL-Nza" secondAttribute="centerY" id="7ai-AN-dPa"/>
                                                             <constraint firstItem="kJn-NL-Nza" firstAttribute="top" secondItem="ICN-AH-rgb" secondAttribute="top" constant="16" id="AJ4-5b-kpz"/>
-                                                            <constraint firstAttribute="trailing" secondItem="kJn-NL-Nza" secondAttribute="trailing" constant="16" id="BSf-J7-NmD"/>
+                                                            <constraint firstAttribute="trailing" secondItem="3Ev-Pw-eJG" secondAttribute="trailing" constant="16" id="HCr-oU-VU6"/>
+                                                            <constraint firstItem="3Ev-Pw-eJG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kJn-NL-Nza" secondAttribute="trailing" constant="12" id="HxC-Va-x5n"/>
                                                             <constraint firstItem="XcZ-74-i4m" firstAttribute="top" secondItem="kJn-NL-Nza" secondAttribute="bottom" constant="12" id="L4L-cN-SCN"/>
                                                             <constraint firstAttribute="bottom" secondItem="XcZ-74-i4m" secondAttribute="bottom" constant="16" id="R89-wN-Zi5"/>
                                                             <constraint firstAttribute="trailing" secondItem="XcZ-74-i4m" secondAttribute="trailing" constant="16" id="RKA-lf-JZL"/>
@@ -1123,9 +1136,11 @@
                         <outlet property="metadataLabel" destination="6NS-qd-piG" id="WRi-SW-O7a"/>
                         <outlet property="notesCardView" destination="ICN-AH-rgb" id="hDe-Mw-YkS"/>
                         <outlet property="notesStackView" destination="XcZ-74-i4m" id="uEw-LK-j9y"/>
+                        <outlet property="notesTitleLabel" destination="kJn-NL-Nza" id="tCV-k8-fJx"/>
                         <outlet property="outputBodyLabel" destination="I9p-N9-o4T" id="KwQ-za-aCB"/>
                         <outlet property="outputCardView" destination="avl-vn-Vax" id="Cn6-L0-a2s"/>
                         <outlet property="outputTitleLabel" destination="vYW-Op-crw" id="USI-1f-ZqS"/>
+                        <outlet property="saveAllNotesButton" destination="3Ev-Pw-eJG" id="a7U-z1-RhN"/>
                         <outlet property="scrollView" destination="bbS-2k-x59" id="G7P-ef-kk5"/>
                     </connections>
                 </viewController>

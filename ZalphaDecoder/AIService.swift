@@ -30,11 +30,18 @@ final class AIService {
     }
 
     /// Sends the user's text to Gemini and returns the decoded result with optional notes.
-    func decode(text: String, sourceLanguage: String, targetLanguage: String, style: TranslationStyle) async throws -> DecodeResult {
+    func decode(
+        text: String,
+        sourceLanguage: String,
+        targetLanguage: String,
+        noteLanguage: String,
+        style: TranslationStyle
+    ) async throws -> DecodeResult {
         let prompt = promptBuilder.makeDecodePrompt(
             text: text,
             sourceLanguage: sourceLanguage,
             targetLanguage: targetLanguage,
+            noteLanguage: noteLanguage,
             style: style
         )
         let rawText = try await textGenerator.generateRawText(prompt: prompt, task: .decode)
@@ -42,7 +49,7 @@ final class AIService {
         return try responseParser.parseDecodeResult(
             from: rawText,
             sourceText: text,
-            targetLanguage: targetLanguage
+            noteLanguage: noteLanguage
         )
     }
 

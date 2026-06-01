@@ -61,7 +61,7 @@ final class HistoryCell: UITableViewCell {
 
     /// Applies the history item text to the storyboard labels.
     func configure(with item: HistoryItem) {
-        metadataLabel.text = "\(HistoryDateFormatter.shortDateTime.string(from: item.createdAt)) · \(item.style)"
+        metadataLabel.text = "\(HistoryDateFormatter.shortDateTime.string(from: item.createdAt)) · \(TranslationStyle.localizedDisplayName(for: item.style))"
         inputTitleLabel.text = AppStrings.History.inputTitle(item.sourceLanguage)
         inputPreviewLabel.text = item.inputText
         outputTitleLabel.text = AppStrings.History.outputTitle(item.targetLanguage)

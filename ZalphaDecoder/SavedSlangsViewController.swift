@@ -17,6 +17,7 @@ final class SavedSlangsViewController: UIViewController {
     var filteredItems: [SavedSlang] = []
     var selectedItem: SavedSlang?
     let searchController = UISearchController(searchResultsController: nil)
+    var deleteAllButton: UIBarButtonItem?
     var toastLabel: ToastLabel?
     var toastHideWorkItem: DispatchWorkItem?
 
@@ -24,6 +25,7 @@ final class SavedSlangsViewController: UIViewController {
         super.viewDidLoad()
 
         navigationItem.title = AppStrings.SavedSlang.title
+        configureNavigationActions()
         configureTableView()
         configureSearchController()
         registerForThemeChanges()
@@ -56,5 +58,6 @@ final class SavedSlangsViewController: UIViewController {
         applySearchFilter(searchController.searchBar.text)
         tableView.reloadData()
         updateBackgroundView()
+        updateDeleteAllSavedSlangsButton()
     }
 }

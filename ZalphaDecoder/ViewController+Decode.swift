@@ -40,6 +40,7 @@ extension ViewController {
                 text: input,
                 sourceLanguage: resolvedSourceLanguage.displayName,
                 targetLanguage: screenModel.targetLanguage.displayName,
+                noteLanguage: AppStrings.Decode.noteLanguage,
                 style: screenModel.selectedStyle
             )
             outputTextView.text = decodeResult.result
@@ -116,6 +117,7 @@ extension ViewController {
                 AppStrings.Decode.noteLine(
                     sourceExpression: note.sourceExpression,
                     meaning: note.meaning,
+                    meaningLanguage: note.meaningLanguage,
                     translatedExpression: note.translatedExpression
                 )
             }

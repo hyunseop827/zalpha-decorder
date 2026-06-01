@@ -46,6 +46,7 @@
 "decode.error.sourceMismatch" = "Input looks %@. Check source language.";
 "decode.loading.title" = "Decoding...";
 "decode.notes.detail.accessibility" = "Decode Notes Detail";
+"decode.note.language" = "English";
 "decode.note.line" = "• \"%@\" means \"%@\", translated as \"%@\".";
 "decode.note.line.noTranslation" = "• \"%@\" means \"%@\".";
 
@@ -63,6 +64,7 @@
 "history.deleteAll.title" = "Delete all history?";
 "history.deleteOne.title" = "Delete this history?";
 "history.delete.message" = "This cannot be undone.";
+"history.deleted" = "History deleted.";
 "history.input" = "Input";
 "history.output" = "Output";
 "history.input.language" = "Input - %@";
@@ -103,7 +105,10 @@
 "savedSlang.expression.copied" = "Expression copied.";
 "savedSlang.example.copied" = "Example copied.";
 "savedSlang.delete.title" = "Delete this slang?";
+"savedSlang.deleteAll.title" = "Delete all saved slangs?";
+"savedSlang.deleteAll.message" = "This will remove every saved expression. This cannot be undone.";
 "savedSlang.deleted" = "Deleted.";
+"savedSlang.allDeleted" = "All saved slangs deleted.";
 "savedSlang.metadata.updated" = "%@ → %@ · Updated %@";
 "savedSlang.action.copy" = "Copy";
 "savedSlang.action.delete" = "Delete";

@@ -25,6 +25,7 @@ extension HistoryViewController {
 
     func configureDynamicColors() {
         view.backgroundColor = AppTheme.pageBackgroundColor
+        deleteAllHistoryButton?.tintColor = .systemRed
     }
 
     func updateDeleteAllButtonState() {

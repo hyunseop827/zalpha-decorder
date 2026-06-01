@@ -6,7 +6,7 @@
 import Foundation
 
 struct AIServiceResponseParser {
-    func parseDecodeResult(from rawText: String, sourceText: String, targetLanguage: String) throws -> DecodeResult {
+    func parseDecodeResult(from rawText: String, sourceText: String, noteLanguage: String) throws -> DecodeResult {
         guard let jsonText = extractJSONObject(from: rawText),
               let data = jsonText.data(using: .utf8) else {
             print("Firebase AI Logic invalid JSON response:", rawText)
@@ -26,12 +26,10 @@ struct AIServiceResponseParser {
                 notes: validatedNotes(
                     decodedResult.notes
                     .map { note in
-                        let meaningLanguage = (note.meaningLanguage ?? "")
-                            .trimmingCharacters(in: .whitespacesAndNewlines)
                         return DecodeNote(
                             sourceExpression: note.sourceExpression.trimmingCharacters(in: .whitespacesAndNewlines),
                             meaning: note.meaning.trimmingCharacters(in: .whitespacesAndNewlines),
-                            meaningLanguage: meaningLanguage.isEmpty ? targetLanguage : meaningLanguage,
+                            meaningLanguage: noteLanguage,
                             translatedExpression: note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines)
                         )
                     }

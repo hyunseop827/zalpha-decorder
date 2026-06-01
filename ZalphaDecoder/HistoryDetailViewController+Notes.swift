@@ -15,17 +15,12 @@ extension HistoryDetailViewController {
         guard !notes.isEmpty else {
             emptyNotesLabel?.text = AppStrings.History.noNotes
             emptyNotesLabel?.isHidden = false
-            navigationItem.rightBarButtonItem = nil
+            updateNavigationActions(hasNotes: false)
             return
         }
 
         emptyNotesLabel?.isHidden = true
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: AppStrings.History.saveAll,
-            style: .plain,
-            target: self,
-            action: #selector(confirmSaveAllNotes)
-        )
+        updateNavigationActions(hasNotes: true)
         notes.prefix(5).forEach {
             notesStackView?.addArrangedSubview(makeNoteView($0))
         }
@@ -33,7 +28,8 @@ extension HistoryDetailViewController {
 
     /// Removes previously rendered dynamic note rows.
     func clearNotesStackView() {
-        navigationItem.rightBarButtonItem = nil
+        saveAllNotesButton?.isHidden = true
+        saveAllNotesButton?.isEnabled = false
         notesStackView?.arrangedSubviews.forEach {
             guard $0 !== emptyNotesLabel else { return }
             notesStackView?.removeArrangedSubview($0)
@@ -117,17 +113,16 @@ extension HistoryDetailViewController {
     private func makeSaveButtonRow(for note: DecodeNote) -> UIView {
         let spacerView = UIView()
         let button = UIButton(type: .system)
-        button.configuration = nil
-        button.setTitle(AppStrings.History.save, for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
-        AppTheme.applySurfaceStyle(
-            to: button,
-            backgroundColor: AppTheme.accentColor,
-            cornerRadius: 16,
-            borderWidth: 0
-        )
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        var attributedTitle = AttributedString(AppStrings.History.save)
+        attributedTitle.font = .systemFont(ofSize: 14, weight: .semibold)
+
+        var configuration = UIButton.Configuration.filled()
+        configuration.attributedTitle = attributedTitle
+        configuration.baseBackgroundColor = AppTheme.accentColor
+        configuration.baseForegroundColor = .white
+        configuration.cornerStyle = .capsule
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+        button.configuration = configuration
         button.addAction(UIAction { [weak self] _ in
             self?.confirmSave(note)
         }, for: .touchUpInside)
@@ -156,7 +151,7 @@ extension HistoryDetailViewController {
             let result = SavedSlangStore.shared.save(
                 note,
                 sourceLanguage: self?.item?.sourceLanguage ?? "Unknown",
-                meaningLanguage: self?.item?.targetLanguage ?? note.meaningLanguage
+                meaningLanguage: note.meaningLanguage
             )
             UINotificationFeedbackGenerator().notificationOccurred(.success)
             self?.showToast(result.message)
@@ -164,7 +159,48 @@ extension HistoryDetailViewController {
         present(alertController, animated: true)
     }
 
-    @objc private func confirmSaveAllNotes() {
+    private func updateNavigationActions(hasNotes: Bool) {
+        guard item != nil else {
+            navigationItem.rightBarButtonItems = nil
+            saveAllNotesButton?.isHidden = true
+            saveAllNotesButton?.isEnabled = false
+            return
+        }
+
+        navigationItem.rightBarButtonItems = [makeDeleteHistoryBarButton()]
+        saveAllNotesButton?.isHidden = !hasNotes
+        saveAllNotesButton?.isEnabled = hasNotes
+    }
+
+    private func makeDeleteHistoryBarButton() -> UIBarButtonItem {
+        let button = UIBarButtonItem(
+            image: UIImage(systemName: "trash"),
+            style: .plain,
+            target: self,
+            action: #selector(confirmDeleteHistory)
+        )
+        button.tintColor = .systemRed
+        return button
+    }
+
+    @objc private func confirmDeleteHistory() {
+        guard let item = item else { return }
+
+        let alertController = UIAlertController(
+            title: AppStrings.History.deleteOneTitle,
+            message: AppStrings.History.deleteMessage,
+            preferredStyle: .alert
+        )
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.no, style: .cancel))
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.yes, style: .destructive) { [weak self] _ in
+            HistoryStore.shared.delete(id: item.id)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            self?.navigationController?.popViewController(animated: true)
+        })
+        present(alertController, animated: true)
+    }
+
+    @IBAction func confirmSaveAllNotes(_ sender: Any) {
         guard let item = item, !item.notes.isEmpty else { return }
 
         let alertController = UIAlertController(
@@ -178,7 +214,7 @@ extension HistoryDetailViewController {
                 SavedSlangStore.shared.save(
                     $0,
                     sourceLanguage: item.sourceLanguage,
-                    meaningLanguage: item.targetLanguage
+                    meaningLanguage: $0.meaningLanguage
                 )
             }
             UINotificationFeedbackGenerator().notificationOccurred(.success)

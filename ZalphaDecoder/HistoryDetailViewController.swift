@@ -19,6 +19,8 @@ final class HistoryDetailViewController: UIViewController {
     @IBOutlet weak var inputBodyLabel: UILabel?
     @IBOutlet weak var outputTitleLabel: UILabel?
     @IBOutlet weak var outputBodyLabel: UILabel?
+    @IBOutlet weak var notesTitleLabel: UILabel?
+    @IBOutlet weak var saveAllNotesButton: UIButton?
     @IBOutlet weak var notesStackView: UIStackView?
     @IBOutlet weak var emptyNotesLabel: UILabel?
 
@@ -64,11 +66,12 @@ final class HistoryDetailViewController: UIViewController {
             return
         }
 
-        metadataLabel?.text = "\(HistoryDateFormatter.shortDateTime.string(from: item.createdAt)) · \(item.style)"
+        metadataLabel?.text = "\(HistoryDateFormatter.shortDateTime.string(from: item.createdAt)) · \(TranslationStyle.localizedDisplayName(for: item.style))"
         inputTitleLabel?.text = AppStrings.History.inputTitle(item.sourceLanguage)
         inputBodyLabel?.text = item.inputText
         outputTitleLabel?.text = AppStrings.History.outputTitle(item.targetLanguage)
         outputBodyLabel?.text = item.outputText
+        notesTitleLabel?.text = AppStrings.Main.notesTitle
         renderNotes(item.notes)
     }
 }

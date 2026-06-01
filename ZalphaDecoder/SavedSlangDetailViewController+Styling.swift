@@ -19,6 +19,7 @@ extension SavedSlangDetailViewController {
 
     func configureDynamicColors() {
         view.backgroundColor = AppTheme.pageBackgroundColor
+        navigationItem.rightBarButtonItems?.forEach { $0.tintColor = .systemRed }
         scrollView.backgroundColor = AppTheme.pageBackgroundColor
         contentView.backgroundColor = AppTheme.pageBackgroundColor
         expressionLabel.textColor = AppTheme.accentColor

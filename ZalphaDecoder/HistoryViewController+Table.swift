@@ -40,6 +40,7 @@ extension HistoryViewController: UITableViewDataSource, UITableViewDelegate {
             self?.confirmDelete(item)
             completion(false)
         }
+        deleteAction.backgroundColor = .systemRed
 
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
         configuration.performsFirstActionWithFullSwipe = false

@@ -36,11 +36,14 @@ extension HistoryViewController: UISearchResultsUpdating {
         }
 
         filteredItems = items.filter { item in
-            item.inputText.lowercased().contains(query)
+            let localizedStyle = TranslationStyle.localizedDisplayName(for: item.style).lowercased()
+
+            return item.inputText.lowercased().contains(query)
                 || item.outputText.lowercased().contains(query)
                 || item.sourceLanguage.lowercased().contains(query)
                 || item.targetLanguage.lowercased().contains(query)
                 || item.style.lowercased().contains(query)
+                || localizedStyle.contains(query)
         }
     }
 

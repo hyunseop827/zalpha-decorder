@@ -18,7 +18,10 @@ extension HistoryDetailViewController {
         metadataLabel?.textColor = secondaryLabelColor
         inputTitleLabel?.textColor = secondaryLabelColor
         outputTitleLabel?.textColor = secondaryLabelColor
+        notesTitleLabel?.text = AppStrings.Main.notesTitle
+        notesTitleLabel?.textColor = AppTheme.labelColor
         emptyNotesLabel?.textColor = AppTheme.secondaryLabelColor
+        configureSaveAllNotesButton()
         configureCards()
     }
 
@@ -40,6 +43,20 @@ extension HistoryDetailViewController {
         [inputCardView, outputCardView, notesCardView].forEach {
             applyCardStyle(to: $0)
         }
+    }
+
+    private func configureSaveAllNotesButton() {
+        var attributedTitle = AttributedString(AppStrings.History.saveAll)
+        attributedTitle.font = .systemFont(ofSize: 14, weight: .semibold)
+
+        var configuration = UIButton.Configuration.filled()
+        configuration.attributedTitle = attributedTitle
+        configuration.baseBackgroundColor = AppTheme.accentColor
+        configuration.baseForegroundColor = .white
+        configuration.cornerStyle = .capsule
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 14, bottom: 0, trailing: 14)
+
+        saveAllNotesButton?.configuration = configuration
     }
 
     private func applyCardStyle(to view: UIView?) {
