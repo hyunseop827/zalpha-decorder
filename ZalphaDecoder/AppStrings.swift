@@ -86,6 +86,10 @@ enum AppStrings {
         static let translatedAs = AppStrings.localized("history.note.translatedAs")
         static let save = AppStrings.localized("history.note.save")
         static let saveTitle = AppStrings.localized("history.note.saveTitle")
+        static let saveAll = AppStrings.localized("history.note.saveAll")
+        static let saveAllTitle = AppStrings.localized("history.note.saveAllTitle")
+        static let searchPlaceholder = AppStrings.localized("history.search.placeholder")
+        static let noMatching = AppStrings.localized("history.empty.noMatching")
 
         static func inputTitle(_ language: String) -> String {
             AppStrings.format("history.input.language", language)
@@ -93,6 +97,18 @@ enum AppStrings {
 
         static func outputTitle(_ language: String) -> String {
             AppStrings.format("history.output.language", language)
+        }
+
+        static func savedAndUpdatedNotes(savedCount: Int, updatedCount: Int) -> String {
+            AppStrings.format("history.note.saveAll.savedAndUpdated", savedCount, updatedCount)
+        }
+
+        static func savedNotes(_ count: Int) -> String {
+            AppStrings.format("history.note.saveAll.saved", count)
+        }
+
+        static func updatedNotes(_ count: Int) -> String {
+            AppStrings.format("history.note.saveAll.updated", count)
         }
     }
 

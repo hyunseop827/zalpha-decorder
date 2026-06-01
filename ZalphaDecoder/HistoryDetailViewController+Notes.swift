@@ -15,10 +15,17 @@ extension HistoryDetailViewController {
         guard !notes.isEmpty else {
             emptyNotesLabel?.text = AppStrings.History.noNotes
             emptyNotesLabel?.isHidden = false
+            navigationItem.rightBarButtonItem = nil
             return
         }
 
         emptyNotesLabel?.isHidden = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: AppStrings.History.saveAll,
+            style: .plain,
+            target: self,
+            action: #selector(confirmSaveAllNotes)
+        )
         notes.prefix(5).forEach {
             notesStackView?.addArrangedSubview(makeNoteView($0))
         }
@@ -26,6 +33,7 @@ extension HistoryDetailViewController {
 
     /// Removes previously rendered dynamic note rows.
     func clearNotesStackView() {
+        navigationItem.rightBarButtonItem = nil
         notesStackView?.arrangedSubviews.forEach {
             guard $0 !== emptyNotesLabel else { return }
             notesStackView?.removeArrangedSubview($0)
@@ -154,5 +162,50 @@ extension HistoryDetailViewController {
             self?.showToast(result.message)
         })
         present(alertController, animated: true)
+    }
+
+    @objc private func confirmSaveAllNotes() {
+        guard let item = item, !item.notes.isEmpty else { return }
+
+        let alertController = UIAlertController(
+            title: AppStrings.History.saveAllTitle,
+            message: nil,
+            preferredStyle: .alert
+        )
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.no, style: .cancel))
+        alertController.addAction(UIAlertAction(title: AppStrings.Common.yes, style: .default) { [weak self] _ in
+            let results = item.notes.map {
+                SavedSlangStore.shared.save(
+                    $0,
+                    sourceLanguage: item.sourceLanguage,
+                    meaningLanguage: item.targetLanguage
+                )
+            }
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            self?.showToast(Self.saveAllMessage(for: results))
+        })
+        present(alertController, animated: true)
+    }
+
+    private static func saveAllMessage(for results: [SavedSlangSaveResult]) -> String {
+        let savedCount = results.filter { $0 == .saved }.count
+        let updatedCount = results.filter { $0 == .updated }.count
+
+        if savedCount > 0, updatedCount > 0 {
+            return AppStrings.History.savedAndUpdatedNotes(
+                savedCount: savedCount,
+                updatedCount: updatedCount
+            )
+        }
+
+        if savedCount > 0 {
+            return AppStrings.History.savedNotes(savedCount)
+        }
+
+        if updatedCount > 0 {
+            return AppStrings.History.updatedNotes(updatedCount)
+        }
+
+        return results.first?.message ?? AppStrings.SavedSlang.invalid
     }
 }

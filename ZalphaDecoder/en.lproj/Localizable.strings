@@ -74,6 +74,13 @@
 "history.note.translatedAs" = "Translated As";
 "history.note.save" = "Save";
 "history.note.saveTitle" = "Save this note?";
+"history.note.saveAll" = "Save All";
+"history.note.saveAllTitle" = "Save all notes?";
+"history.note.saveAll.savedAndUpdated" = "Saved %d, updated %d.";
+"history.note.saveAll.saved" = "Saved %d notes.";
+"history.note.saveAll.updated" = "Updated %d notes.";
+"history.search.placeholder" = "Search history";
+"history.empty.noMatching" = "No matching history.";
 
 "savedSlang.title" = "Saved Slangs";
 "savedSlang.detail.title" = "Saved Slang";

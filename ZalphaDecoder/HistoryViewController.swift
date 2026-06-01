@@ -15,13 +15,16 @@ final class HistoryViewController: UIViewController {
     @IBOutlet weak var deleteAllHistoryButton: UIBarButtonItem!
 
     var items: [HistoryItem] = []
+    var filteredItems: [HistoryItem] = []
     var selectedItem: HistoryItem?
+    let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.title = AppStrings.History.title
         configureTableView()
+        configureSearchController()
         registerForThemeChanges()
     }
 
@@ -45,6 +48,7 @@ final class HistoryViewController: UIViewController {
 
     func reloadHistory() {
         items = HistoryStore.shared.loadItems()
+        applySearchFilter(searchController.searchBar.text)
         tableView.reloadData()
         updateBackgroundView()
         updateDeleteAllButtonState()

@@ -10,7 +10,7 @@ import UIKit
 /// Handles History table view data binding and row selection.
 extension HistoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        items.count
+        displayedItems.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -21,13 +21,13 @@ extension HistoryViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
 
-        cell.configure(with: items[indexPath.row])
+        cell.configure(with: displayedItems[indexPath.row])
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        selectedItem = items[indexPath.row]
+        selectedItem = displayedItems[indexPath.row]
         performSegue(withIdentifier: Self.historyDetailSegueIdentifier, sender: self)
     }
 
@@ -35,7 +35,7 @@ extension HistoryViewController: UITableViewDataSource, UITableViewDelegate {
         _ tableView: UITableView,
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
-        let item = items[indexPath.row]
+        let item = displayedItems[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: AppStrings.History.deleteAction) { [weak self] _, _, completion in
             self?.confirmDelete(item)
             completion(false)

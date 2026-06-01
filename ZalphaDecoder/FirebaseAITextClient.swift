@@ -39,7 +39,8 @@ final class FirebaseAITextClient: AITextGenerating {
         topP: 0.85,
         candidateCount: 1,
         maxOutputTokens: 700,
-        responseMIMEType: "application/json"
+        responseMIMEType: "application/json",
+        responseSchema: decodeResponseSchema
     )
 
     private static let exampleGenerationConfig = GenerationConfig(
@@ -47,7 +48,39 @@ final class FirebaseAITextClient: AITextGenerating {
         topP: 0.95,
         candidateCount: 1,
         maxOutputTokens: 220,
-        responseMIMEType: "application/json"
+        responseMIMEType: "application/json",
+        responseSchema: exampleResponseSchema
+    )
+
+    private static let decodeResponseSchema = Schema.object(
+        properties: [
+            "result": .string(),
+            "notes": .array(
+                items: .object(
+                    properties: [
+                        "sourceExpression": .string(),
+                        "meaning": .string(),
+                        "meaningLanguage": .string(),
+                        "translatedExpression": .string()
+                    ]
+                ),
+                maxItems: 5
+            )
+        ],
+        propertyOrdering: ["result", "notes"]
+    )
+
+    private static let exampleResponseSchema = Schema.object(
+        properties: [
+            "example": .object(
+                properties: [
+                    "sentence": .string(),
+                    "meaning": .string()
+                ],
+                propertyOrdering: ["sentence", "meaning"]
+            )
+        ],
+        propertyOrdering: ["example"]
     )
 
     func generateRawText(prompt: String, task: AITextGenerationTask) async throws -> String {

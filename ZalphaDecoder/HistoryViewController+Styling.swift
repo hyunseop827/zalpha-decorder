@@ -32,13 +32,13 @@ extension HistoryViewController {
     }
 
     func updateBackgroundView() {
-        guard items.isEmpty else {
+        guard displayedItems.isEmpty else {
             tableView.backgroundView = nil
             return
         }
 
         let label = UILabel()
-        label.text = AppStrings.History.noHistory
+        label.text = isSearching ? AppStrings.History.noMatching : AppStrings.History.noHistory
         label.textColor = AppTheme.secondaryLabelColor
         label.font = .systemFont(ofSize: 17, weight: .medium)
         label.textAlignment = .center

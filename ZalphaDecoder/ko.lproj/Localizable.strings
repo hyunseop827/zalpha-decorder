@@ -74,6 +74,13 @@
 "history.note.translatedAs" = "번역 표현";
 "history.note.save" = "저장";
 "history.note.saveTitle" = "이 노트를 저장할까요?";
+"history.note.saveAll" = "모두 저장";
+"history.note.saveAllTitle" = "모든 노트를 저장할까요?";
+"history.note.saveAll.savedAndUpdated" = "%d개 저장, %d개 업데이트했습니다.";
+"history.note.saveAll.saved" = "%d개 노트를 저장했습니다.";
+"history.note.saveAll.updated" = "%d개 노트를 업데이트했습니다.";
+"history.search.placeholder" = "히스토리 검색";
+"history.empty.noMatching" = "일치하는 히스토리가 없습니다.";
 
 "savedSlang.title" = "저장한 표현";
 "savedSlang.detail.title" = "표현 상세";
