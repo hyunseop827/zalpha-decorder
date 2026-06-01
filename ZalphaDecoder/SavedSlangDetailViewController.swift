@@ -15,10 +15,13 @@ final class SavedSlangDetailViewController: UIViewController {
     @IBOutlet weak var expressionCopyButton: UIButton!
     @IBOutlet weak var metadataLabel: UILabel!
     @IBOutlet weak var meaningsCardView: UIView!
+    @IBOutlet weak var meaningsTitleLabel: UILabel?
     @IBOutlet weak var meaningsStackView: UIStackView!
     @IBOutlet weak var translationsCardView: UIView!
+    @IBOutlet weak var originalExpressionsTitleLabel: UILabel?
     @IBOutlet weak var translationsStackView: UIStackView!
     @IBOutlet weak var examplesCardView: UIView!
+    @IBOutlet weak var examplesTitleLabel: UILabel?
     @IBOutlet weak var examplesStackView: UIStackView!
     @IBOutlet weak var generateExamplesButton: UIButton!
     @IBOutlet weak var examplesLoadingOverlayView: UIView!
@@ -60,17 +63,21 @@ final class SavedSlangDetailViewController: UIViewController {
     }
 
     func renderItem() {
+        meaningsTitleLabel?.text = AppStrings.SavedSlang.meaningsTitle
+        originalExpressionsTitleLabel?.text = AppStrings.SavedSlang.originalExpressionsTitle
+        examplesTitleLabel?.text = AppStrings.SavedSlang.examplesTitle
+        generateExamplesButton.setTitle(AppStrings.SavedSlang.generateExample, for: .normal)
+
         guard let item else { return }
 
-        expressionLabel.text = item.sourceExpression
+        expressionLabel.text = item.expression
         metadataLabel.text = AppStrings.SavedSlang.metadata(
-            sourceLanguage: item.sourceLanguage,
+            expressionLanguage: item.expressionLanguage,
             meaningLanguage: item.meaningLanguage,
             date: HistoryDateFormatter.shortDateTime.string(from: item.updatedAt)
         )
-        generateExamplesButton.setTitle(AppStrings.SavedSlang.generateExample, for: .normal)
         renderValues(item.meanings, in: meaningsStackView, emptyText: AppStrings.SavedSlang.noMeanings)
-        renderValues(item.translatedExpressions, in: translationsStackView, emptyText: AppStrings.SavedSlang.noTranslations)
+        renderValues(item.originalExpressions, in: translationsStackView, emptyText: AppStrings.SavedSlang.noOriginalExpressions)
         renderExamples(item.examples)
     }
 }

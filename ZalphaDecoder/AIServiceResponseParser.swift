@@ -33,7 +33,11 @@ struct AIServiceResponseParser {
                             translatedExpression: note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines)
                         )
                     }
-                    .filter { !$0.sourceExpression.isEmpty && !$0.meaning.isEmpty },
+                    .filter {
+                        !$0.sourceExpression.isEmpty
+                            && !$0.meaning.isEmpty
+                            && !$0.translatedExpression.isEmpty
+                    },
                     sourceText: sourceText
                 )
                 .prefix(5)
@@ -210,4 +214,19 @@ private struct RawDecodeNote: Decodable {
     let meaning: String
     let meaningLanguage: String?
     let translatedExpression: String
+
+    private enum CodingKeys: String, CodingKey {
+        case sourceExpression
+        case meaning
+        case meaningLanguage
+        case translatedExpression
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        sourceExpression = try container.decodeIfPresent(String.self, forKey: .sourceExpression) ?? ""
+        meaning = try container.decodeIfPresent(String.self, forKey: .meaning) ?? ""
+        meaningLanguage = try container.decodeIfPresent(String.self, forKey: .meaningLanguage)
+        translatedExpression = try container.decodeIfPresent(String.self, forKey: .translatedExpression) ?? ""
+    }
 }

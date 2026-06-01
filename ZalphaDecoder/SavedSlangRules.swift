@@ -41,18 +41,44 @@ enum SavedSlangRules {
     }
 
     static func inferredLanguageName(for text: String) -> String {
-        text.unicodeScalars.contains { scalar in
+        if text.unicodeScalars.contains(where: { scalar in
             switch scalar.value {
             case 0x1100...0x11FF, 0x3130...0x318F, 0xAC00...0xD7AF, 0xA960...0xA97F, 0xD7B0...0xD7FF:
                 return true
             default:
                 return false
             }
-        } ? "한국어" : "English"
+        }) {
+            return "한국어"
+        }
+
+        if text.unicodeScalars.contains(where: { scalar in
+            switch scalar.value {
+            case 0x3040...0x30FF:
+                return true
+            default:
+                return false
+            }
+        }) {
+            return "Japanese"
+        }
+
+        if text.unicodeScalars.contains(where: { scalar in
+            switch scalar.value {
+            case 0x0400...0x04FF:
+                return true
+            default:
+                return false
+            }
+        }) {
+            return "Russian"
+        }
+
+        return "English"
     }
 
-    static func resolvedSourceLanguage(_ sourceLanguage: String) -> String {
-        let trimmedLanguage = sourceLanguage.trimmingCharacters(in: .whitespacesAndNewlines)
+    static func resolvedExpressionLanguage(_ expressionLanguage: String) -> String {
+        let trimmedLanguage = expressionLanguage.trimmingCharacters(in: .whitespacesAndNewlines)
         return trimmedLanguage.isEmpty ? "Unknown" : trimmedLanguage
     }
 

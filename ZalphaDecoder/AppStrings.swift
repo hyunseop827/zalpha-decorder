@@ -66,7 +66,7 @@ enum AppStrings {
                 return AppStrings.format("decode.note.line.noTranslation", sourceExpression, meaning)
             }
 
-            return AppStrings.format("decode.note.line", sourceExpression, meaning, translatedExpression)
+            return AppStrings.format("decode.note.line", sourceExpression, translatedExpression)
         }
     }
 
@@ -85,6 +85,7 @@ enum AppStrings {
         static let noNotes = AppStrings.localized("history.detail.noNotes")
         static let expression = AppStrings.localized("history.note.expression")
         static let meaning = AppStrings.localized("history.note.meaning")
+        static let originalExpression = AppStrings.localized("history.note.originalExpression")
         static let translatedAs = AppStrings.localized("history.note.translatedAs")
         static let save = AppStrings.localized("history.note.save")
         static let saveTitle = AppStrings.localized("history.note.saveTitle")
@@ -126,8 +127,11 @@ enum AppStrings {
         static let exampleFull = AppStrings.localized("savedSlang.example.full")
         static let exampleInvalid = AppStrings.localized("savedSlang.example.invalid")
         static let generateExample = AppStrings.localized("savedSlang.example.generate")
+        static let meaningsTitle = AppStrings.localized("savedSlang.meanings.title")
         static let noMeanings = AppStrings.localized("savedSlang.noMeanings")
-        static let noTranslations = AppStrings.localized("savedSlang.noTranslations")
+        static let originalExpressionsTitle = AppStrings.localized("savedSlang.originalExpressions.title")
+        static let noOriginalExpressions = AppStrings.localized("savedSlang.noOriginalExpressions")
+        static let examplesTitle = AppStrings.localized("savedSlang.examples.title")
         static let examplesLoadingTitle = AppStrings.localized("savedSlang.examples.loading")
         static let examplesBlocked = AppStrings.localized("savedSlang.examples.error.blocked")
         static let examplesGeneric = AppStrings.localized("savedSlang.examples.error.generic")
@@ -147,8 +151,8 @@ enum AppStrings {
         static let noMatching = AppStrings.localized("savedSlang.empty.noMatching")
         static let searchPlaceholder = AppStrings.localized("savedSlang.search.placeholder")
 
-        static func metadata(sourceLanguage: String, meaningLanguage: String, date: String) -> String {
-            AppStrings.format("savedSlang.metadata.updated", sourceLanguage, meaningLanguage, date)
+        static func metadata(expressionLanguage: String, meaningLanguage: String, date: String) -> String {
+            AppStrings.format("savedSlang.metadata.updated", expressionLanguage, meaningLanguage, date)
         }
 
         static func meaningPreview(_ meaning: String) -> String {
@@ -177,28 +181,10 @@ extension AppStrings.Decode {
         meaningLanguage: String,
         translatedExpression: String
     ) -> String {
-        if isKoreanLanguageName(meaningLanguage) {
-            guard !translatedExpression.isEmpty else {
-                return "• \"\(sourceExpression)\"는 \"\(meaning)\"라는 뜻입니다."
-            }
-
-            return "• \"\(sourceExpression)\"는 \"\(meaning)\"라는 뜻이고, \"\(translatedExpression)\"로 번역했습니다."
-        }
-
         guard !translatedExpression.isEmpty else {
-            return "• \"\(sourceExpression)\" means \"\(meaning)\"."
+            return AppStrings.format("decode.note.line.noTranslation", sourceExpression, meaning)
         }
 
-        return "• \"\(sourceExpression)\" means \"\(meaning)\", translated as \"\(translatedExpression)\"."
-    }
-
-    private static func isKoreanLanguageName(_ languageName: String) -> Bool {
-        let normalizedLanguageName = languageName
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .lowercased()
-
-        return normalizedLanguageName == "한국어"
-            || normalizedLanguageName == "korean"
-            || normalizedLanguageName == "ko"
+        return AppStrings.format("decode.note.line", sourceExpression, translatedExpression)
     }
 }

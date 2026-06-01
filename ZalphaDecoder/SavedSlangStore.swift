@@ -22,39 +22,39 @@ final class SavedSlangStore {
         persistence.loadItems()
     }
 
-    /// Saves one Decode Note, deduplicating by normalized source expression and language pair.
+    /// Saves one Decode Note by its target-language expression.
     @discardableResult
-    func save(_ note: DecodeNote, sourceLanguage: String, meaningLanguage: String) -> SavedSlangSaveResult {
-        let sourceExpression = note.sourceExpression.trimmingCharacters(in: .whitespacesAndNewlines)
-        let normalizedExpression = SavedSlangRules.normalize(sourceExpression)
-        let sourceLanguage = SavedSlangRules.resolvedSourceLanguage(sourceLanguage)
+    func save(_ note: DecodeNote, targetLanguage: String, meaningLanguage: String) -> SavedSlangSaveResult {
+        let expression = note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines)
+        let originalExpression = note.sourceExpression.trimmingCharacters(in: .whitespacesAndNewlines)
+        let normalizedExpression = SavedSlangRules.normalize(expression)
+        let expressionLanguage = SavedSlangRules.resolvedExpressionLanguage(targetLanguage)
         let meaningLanguage = SavedSlangRules.resolvedMeaningLanguage(
             meaningLanguage,
             noteMeaningLanguage: note.meaningLanguage
         )
 
-        guard !sourceExpression.isEmpty, !normalizedExpression.isEmpty else {
+        guard !expression.isEmpty, !normalizedExpression.isEmpty else {
             return .invalid
         }
 
         let meaning = note.meaning.trimmingCharacters(in: .whitespacesAndNewlines)
-        let translatedExpression = note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines)
         let now = Date()
         var items = loadItems()
 
         guard let existingIndex = items.firstIndex(where: {
             $0.normalizedExpression == normalizedExpression
-                && $0.sourceLanguage.caseInsensitiveCompare(sourceLanguage) == .orderedSame
+                && $0.expressionLanguage.caseInsensitiveCompare(expressionLanguage) == .orderedSame
                 && $0.meaningLanguage.caseInsensitiveCompare(meaningLanguage) == .orderedSame
         }) else {
             let item = SavedSlang(
                 id: UUID(),
-                sourceExpression: sourceExpression,
+                expression: expression,
                 normalizedExpression: normalizedExpression,
-                sourceLanguage: sourceLanguage,
+                expressionLanguage: expressionLanguage,
                 meaningLanguage: meaningLanguage,
                 meanings: meaning.isEmpty ? [] : [meaning],
-                translatedExpressions: translatedExpression.isEmpty ? [] : [translatedExpression],
+                originalExpressions: originalExpression.isEmpty ? [] : [originalExpression],
                 examples: [],
                 createdAt: now,
                 updatedAt: now,
@@ -67,15 +67,15 @@ final class SavedSlangStore {
 
         var item = items[existingIndex]
         let didAddMeaning = SavedSlangRules.appendUnique(meaning, to: &item.meanings)
-        let didAddTranslatedExpression = SavedSlangRules.appendUnique(translatedExpression, to: &item.translatedExpressions)
-        if didAddMeaning || didAddTranslatedExpression {
+        let didAddOriginalExpression = SavedSlangRules.appendUnique(originalExpression, to: &item.originalExpressions)
+        if didAddMeaning || didAddOriginalExpression {
             item.updatedAt = now
         }
         item.seenCount += 1
         items[existingIndex] = item
         persistence.save(items)
 
-        return didAddMeaning || didAddTranslatedExpression ? .updated : .duplicate
+        return didAddMeaning || didAddOriginalExpression ? .updated : .duplicate
     }
 
     /// Adds one generated example to a saved slang item.

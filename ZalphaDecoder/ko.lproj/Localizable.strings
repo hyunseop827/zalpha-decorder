@@ -47,7 +47,7 @@
 "decode.loading.title" = "Decoding...";
 "decode.notes.detail.accessibility" = "디코드 노트 상세";
 "decode.note.language" = "한국어";
-"decode.note.line" = "• \"%@\"는 \"%@\"라는 뜻이고, \"%@\"로 번역했습니다.";
+"decode.note.line" = "• \"%@\"는 \"%@\"로 번역했습니다.";
 "decode.note.line.noTranslation" = "• \"%@\"는 \"%@\"라는 뜻입니다.";
 
 "language.auto" = "자동";
@@ -73,6 +73,7 @@
 "history.detail.noNotes" = "이 디코드에는 노트가 없습니다.";
 "history.note.expression" = "표현";
 "history.note.meaning" = "뜻";
+"history.note.originalExpression" = "원문 표현";
 "history.note.translatedAs" = "번역 표현";
 "history.note.save" = "저장";
 "history.note.saveTitle" = "이 노트를 저장할까요?";
@@ -95,8 +96,11 @@
 "savedSlang.example.full" = "예문을 먼저 하나 삭제하세요.";
 "savedSlang.example.invalid" = "예문을 저장하지 못했습니다.";
 "savedSlang.example.generate" = "예문 생성";
+"savedSlang.meanings.title" = "뜻";
 "savedSlang.noMeanings" = "저장된 뜻이 없습니다.";
-"savedSlang.noTranslations" = "저장된 번역 예시가 없습니다.";
+"savedSlang.originalExpressions.title" = "원문 표현";
+"savedSlang.noOriginalExpressions" = "저장된 원문 표현이 없습니다.";
+"savedSlang.examples.title" = "예문";
 "savedSlang.examples.loading" = "예문 생성 중...";
 "savedSlang.examples.error.blocked" = "예문을 안전하게 생성할 수 없습니다.";
 "savedSlang.examples.error.generic" = "예문을 생성하지 못했습니다.";
@@ -109,7 +113,7 @@
 "savedSlang.deleteAll.message" = "저장한 표현이 전부 삭제됩니다. 이 작업은 되돌릴 수 없습니다.";
 "savedSlang.deleted" = "삭제했습니다.";
 "savedSlang.allDeleted" = "저장한 표현을 모두 삭제했습니다.";
-"savedSlang.metadata.updated" = "%@ → %@ · 업데이트 %@";
+"savedSlang.metadata.updated" = "%@ · %@ 뜻 · 업데이트 %@";
 "savedSlang.action.copy" = "복사";
 "savedSlang.action.delete" = "삭제";
 "savedSlang.examples.empty" = "생성된 예문이 아직 없습니다.";

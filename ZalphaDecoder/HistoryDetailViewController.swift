@@ -53,6 +53,7 @@ final class HistoryDetailViewController: UIViewController {
     }
 
     func renderItem() {
+        configureSaveAllNotesButton()
         clearNotesStackView()
 
         guard let item = item else {

@@ -778,16 +778,16 @@
                                                             <constraint firstAttribute="trailing" secondItem="Vnw-Li-GwY" secondAttribute="trailing" constant="16" id="WUx-kg-34Y"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b3H-8x-xeD" userLabel="Translations Card View">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b3H-8x-xeD" userLabel="Original Expressions Card View">
                                                         <rect key="frame" x="0.0" y="249.66666666666669" width="380" height="163.33333333333331"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example Translations" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="odD-DS-q1G" userLabel="Translations Title Label">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Original Expressions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="odD-DS-q1G" userLabel="Original Expressions Title Label">
                                                                 <rect key="frame" x="16" y="15.999999999999998" width="348" height="20.333333333333329"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ikW-Q8-3IR" userLabel="Translations Stack View">
+                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ikW-Q8-3IR" userLabel="Original Expressions Stack View">
                                                                 <rect key="frame" x="16" y="50.333333333333314" width="348" height="97"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1. ruined" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TR8-2D-iT7">
@@ -956,12 +956,15 @@
                         <outlet property="examplesLoadingLabel" destination="ERy-kW-qYh" id="cPk-Hp-MC7"/>
                         <outlet property="examplesLoadingOverlayView" destination="pE2-mD-7Yq" id="IDM-pf-Nwr"/>
                         <outlet property="examplesStackView" destination="JvC-wx-v3y" id="XFe-bX-oBA"/>
+                        <outlet property="examplesTitleLabel" destination="u1E-BE-PP3" id="e9L-eL-PP3"/>
                         <outlet property="expressionLabel" destination="Uvw-cD-q5h" id="vvh-K4-qp7"/>
                         <outlet property="expressionCopyButton" destination="U69-rf-FI8" id="4hp-Lc-Npk"/>
                         <outlet property="generateExamplesButton" destination="tJi-rd-z9b" id="kx2-O8-ybm"/>
                         <outlet property="meaningsCardView" destination="IBb-oS-YaZ" id="fWi-uw-7Cg"/>
                         <outlet property="meaningsStackView" destination="Sij-CY-ccn" id="OgJ-ZK-xnA"/>
+                        <outlet property="meaningsTitleLabel" destination="Vnw-Li-GwY" id="n9L-eL-GwY"/>
                         <outlet property="metadataLabel" destination="mUJ-BB-n5g" id="O7U-hw-gxe"/>
+                        <outlet property="originalExpressionsTitleLabel" destination="odD-DS-q1G" id="o9L-eL-q1G"/>
                         <outlet property="scrollView" destination="Pz7-qr-U7n" id="tT5-Yw-1HQ"/>
                         <outlet property="translationsCardView" destination="b3H-8x-xeD" id="vlx-FG-i10"/>
                         <outlet property="translationsStackView" destination="ikW-Q8-3IR" id="Z6a-dU-g86"/>

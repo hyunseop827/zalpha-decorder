@@ -11,7 +11,7 @@ import UIKit
 extension SavedSlangDetailViewController {
 
     @IBAction func copyExpressionButtonTapped(_ sender: Any) {
-        guard let expression = item?.sourceExpression, !expression.isEmpty else { return }
+        guard let expression = item?.expression, !expression.isEmpty else { return }
 
         UIPasteboard.general.string = expression
         UINotificationFeedbackGenerator().notificationOccurred(.success)
@@ -31,7 +31,7 @@ extension SavedSlangDetailViewController {
 
         let alertController = UIAlertController(
             title: AppStrings.SavedSlang.deleteTitle,
-            message: "\"\(item.sourceExpression)\"",
+            message: "\"\(item.expression)\"",
             preferredStyle: .alert
         )
         alertController.addAction(UIAlertAction(title: AppStrings.Common.no, style: .cancel))

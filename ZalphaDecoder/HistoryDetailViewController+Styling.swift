@@ -45,7 +45,9 @@ extension HistoryDetailViewController {
         }
     }
 
-    private func configureSaveAllNotesButton() {
+    func configureSaveAllNotesButton() {
+        saveAllNotesButton?.setTitle(AppStrings.History.saveAll, for: .normal)
+
         var attributedTitle = AttributedString(AppStrings.History.saveAll)
         attributedTitle.font = .systemFont(ofSize: 14, weight: .semibold)
 

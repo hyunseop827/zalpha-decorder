@@ -54,12 +54,18 @@ struct AIServicePromptBuilder {
         Notes should explain only meaningful slang, idioms, profanity, meme expressions, abbreviations, or culturally loaded phrases.
         Do not explain ordinary literal words such as nouns, names, pronouns, or basic verbs.
         If a phrase mixes literal words and slang, choose the smallest meaningful slang or idiomatic expression.
+        Every note must include a non-empty translatedExpression that is a reusable expression in \(targetLanguage) used in the result.
+        If there is no reusable target-language expression worth saving, do not create a note.
+        Prefer complete reusable target expressions over tiny standalone particles or intensifiers.
+        Do not create standalone intensifier notes like "개" -> "totally" when the intensifier modifies a slang phrase.
+        Combine intensifiers with the slang phrase they modify when that creates a better saved expression.
         Never use a whole sentence as sourceExpression unless the entire sentence is idiomatic.
         For example, in "인생 조졌다", explain only "조졌다", not "인생" or "인생 조졌다".
         For example, in "야 나 진짜 인생 망했다 ㄹㅇ", explain "망했다" and "ㄹㅇ", not "인생".
-        For Korean emotional slang, isolate the slang verb or marker: "조졌다", "망했다", "ㄹㅇ", "개", "찐" when relevant.
+        For Korean emotional slang, isolate the reusable slang phrase or marker: "조졌다", "망했다", "ㄹㅇ", "찐" when relevant.
         For Korean intensifier "개-" as in "개망했다", explain it as "엄청/완전" when noteLanguage is Korean, or "very/extremely/totally" when noteLanguage is English.
-        When translating Korean "개-" into English, prefer translatedExpression like "totally", "really", or "so"; do not use "actually" unless it truly means actual/really in context.
+        For Korean "개망했다", prefer one note like sourceExpression "개망했다" and translatedExpression "I'm totally cooked" or "totally cooked"; do not split it into "개" -> "totally" and "망했다" -> "cooked".
+        When translating Korean "개-" into English inside a larger phrase, prefer target wording like "totally", "really", or "so"; do not use "actually" unless it truly means actual/really in context.
         Keep sourceExpression as the smallest source phrase worth saving.
         Keep meaning and translatedExpression short.
         Do not write broad notes like "translated a colloquial expression" or "reframed emotional intensity".

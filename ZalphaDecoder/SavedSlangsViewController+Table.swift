@@ -53,7 +53,7 @@ extension SavedSlangsViewController: UITableViewDataSource, UITableViewDelegate 
     }
 
     private func copyExpression(from item: SavedSlang) {
-        UIPasteboard.general.string = item.sourceExpression
+        UIPasteboard.general.string = item.expression
         UINotificationFeedbackGenerator().notificationOccurred(.success)
         showToast(AppStrings.SavedSlang.expressionCopied)
     }
@@ -61,7 +61,7 @@ extension SavedSlangsViewController: UITableViewDataSource, UITableViewDelegate 
     private func confirmDelete(_ item: SavedSlang) {
         let alertController = UIAlertController(
             title: AppStrings.SavedSlang.deleteTitle,
-            message: "\"\(item.sourceExpression)\"",
+            message: "\"\(item.expression)\"",
             preferredStyle: .alert
         )
         alertController.addAction(UIAlertAction(title: AppStrings.Common.no, style: .cancel))

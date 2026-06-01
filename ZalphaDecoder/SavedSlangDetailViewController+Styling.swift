@@ -25,6 +25,9 @@ extension SavedSlangDetailViewController {
         expressionLabel.textColor = AppTheme.accentColor
         expressionCopyButton.tintColor = AppTheme.accentColor
         metadataLabel.textColor = AppTheme.secondaryLabelColor
+        meaningsTitleLabel?.textColor = AppTheme.labelColor
+        originalExpressionsTitleLabel?.textColor = AppTheme.labelColor
+        examplesTitleLabel?.textColor = AppTheme.labelColor
         generateExamplesButton.tintColor = AppTheme.accentColor
         examplesLoadingOverlayView.backgroundColor = AppTheme.loadingOverlayColor
         examplesLoadingCardView.backgroundColor = AppTheme.cardBackgroundColor

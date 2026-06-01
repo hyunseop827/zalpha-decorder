@@ -39,9 +39,9 @@ extension SavedSlangDetailViewController {
 
         do {
             let generatedExample = try await aiService.generateExample(
-                expression: item.sourceExpression,
+                expression: item.expression,
                 meaning: item.meanings.first ?? "",
-                sourceLanguage: item.sourceLanguage,
+                sourceLanguage: item.expressionLanguage,
                 meaningLanguage: item.meaningLanguage,
                 existingExamples: item.examples.map(\.sentence)
             )

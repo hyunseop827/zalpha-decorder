@@ -38,10 +38,10 @@ final class SavedSlangCell: UITableViewCell {
 
     /// Applies the saved slang item text to the storyboard labels.
     func configure(with item: SavedSlang) {
-        expressionLabel.text = item.sourceExpression
+        expressionLabel.text = item.expression
         meaningLabel.text = AppStrings.SavedSlang.meaningPreview(item.meanings.first ?? "")
         metadataLabel.text = AppStrings.SavedSlang.metadata(
-            sourceLanguage: item.sourceLanguage,
+            expressionLanguage: item.expressionLanguage,
             meaningLanguage: item.meaningLanguage,
             date: HistoryDateFormatter.shortDateTime.string(from: item.updatedAt)
         )

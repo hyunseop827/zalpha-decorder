@@ -39,12 +39,12 @@ struct SavedSlangExample: Codable, Identifiable {
 /// Locally saved slang or expression collected from Decode Notes.
 struct SavedSlang: Codable, Identifiable {
     let id: UUID
-    let sourceExpression: String
+    let expression: String
     let normalizedExpression: String
-    let sourceLanguage: String
+    let expressionLanguage: String
     let meaningLanguage: String
     var meanings: [String]
-    var translatedExpressions: [String]
+    var originalExpressions: [String]
     var examples: [SavedSlangExample]
     let createdAt: Date
     var updatedAt: Date
@@ -52,24 +52,24 @@ struct SavedSlang: Codable, Identifiable {
 
     init(
         id: UUID,
-        sourceExpression: String,
+        expression: String,
         normalizedExpression: String,
-        sourceLanguage: String,
+        expressionLanguage: String,
         meaningLanguage: String,
         meanings: [String],
-        translatedExpressions: [String],
+        originalExpressions: [String],
         examples: [SavedSlangExample] = [],
         createdAt: Date,
         updatedAt: Date,
         seenCount: Int
     ) {
         self.id = id
-        self.sourceExpression = sourceExpression
+        self.expression = expression
         self.normalizedExpression = normalizedExpression
-        self.sourceLanguage = sourceLanguage
+        self.expressionLanguage = expressionLanguage
         self.meaningLanguage = meaningLanguage
         self.meanings = meanings
-        self.translatedExpressions = translatedExpressions
+        self.originalExpressions = originalExpressions
         self.examples = examples
         self.createdAt = createdAt
         self.updatedAt = updatedAt
@@ -78,20 +78,33 @@ struct SavedSlang: Codable, Identifiable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let decodedSourceExpression = try container.decodeIfPresent(String.self, forKey: .sourceExpression)
+        let oldContainer = try decoder.container(keyedBy: LegacyCodingKeys.self)
+        let decodedExpression = try container.decodeIfPresent(String.self, forKey: .expression)
+        let decodedSourceExpression = try oldContainer.decodeIfPresent(String.self, forKey: .sourceExpression)
+        let decodedTranslatedExpressions = try oldContainer.decodeIfPresent([String].self, forKey: .translatedExpressions) ?? []
+        let migratedExpression = decodedTranslatedExpressions
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .first { !$0.isEmpty }
+        let isMigratingTranslatedExpression = decodedExpression == nil && migratedExpression != nil
         let decodedNormalizedExpression = try container.decodeIfPresent(String.self, forKey: .normalizedExpression)
-        let fallbackExpression = decodedSourceExpression ?? decodedNormalizedExpression ?? ""
+        let fallbackExpression = decodedExpression ?? migratedExpression ?? decodedSourceExpression ?? decodedNormalizedExpression ?? ""
         let decodedCreatedAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
         let decodedUpdatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
+        let decodedOriginalExpressions = try container.decodeIfPresent([String].self, forKey: .originalExpressions)
+        let migratedOriginalExpressions = decodedSourceExpression
+            .map { [$0] } ?? []
 
         id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
-        sourceExpression = fallbackExpression
-        normalizedExpression = decodedNormalizedExpression ?? SavedSlangRules.normalize(fallbackExpression)
-        sourceLanguage = try container.decodeIfPresent(String.self, forKey: .sourceLanguage)
-            ?? SavedSlangRules.inferredLanguageName(for: sourceExpression)
+        expression = fallbackExpression
+        normalizedExpression = (isMigratingTranslatedExpression ? nil : decodedNormalizedExpression)
+            ?? SavedSlangRules.normalize(fallbackExpression)
+        expressionLanguage = try container.decodeIfPresent(String.self, forKey: .expressionLanguage)
+            ?? SavedSlangRules.inferredLanguageName(for: expression)
         meaningLanguage = try container.decodeIfPresent(String.self, forKey: .meaningLanguage) ?? "English"
         meanings = try container.decodeIfPresent([String].self, forKey: .meanings) ?? []
-        translatedExpressions = try container.decodeIfPresent([String].self, forKey: .translatedExpressions) ?? []
+        originalExpressions = (decodedOriginalExpressions ?? migratedOriginalExpressions)
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
         examples = (try container.decodeIfPresent([SavedSlangExample].self, forKey: .examples) ?? [])
             .filter { !$0.sentence.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
             .prefix(SavedSlangLimits.maximumExampleCount)
@@ -99,5 +112,24 @@ struct SavedSlang: Codable, Identifiable {
         createdAt = decodedCreatedAt ?? decodedUpdatedAt ?? Date(timeIntervalSince1970: 0)
         updatedAt = decodedUpdatedAt ?? createdAt
         seenCount = try container.decodeIfPresent(Int.self, forKey: .seenCount) ?? 1
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case expression
+        case normalizedExpression
+        case expressionLanguage
+        case meaningLanguage
+        case meanings
+        case originalExpressions
+        case examples
+        case createdAt
+        case updatedAt
+        case seenCount
+    }
+
+    private enum LegacyCodingKeys: String, CodingKey {
+        case sourceExpression
+        case translatedExpressions
     }
 }

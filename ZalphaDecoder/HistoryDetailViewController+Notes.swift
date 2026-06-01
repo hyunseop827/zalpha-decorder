@@ -38,6 +38,8 @@ extension HistoryDetailViewController {
     }
 
     private func makeNoteView(_ note: DecodeNote) -> UIView {
+        let translatedExpression = note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines)
+        let sourceExpression = note.sourceExpression.trimmingCharacters(in: .whitespacesAndNewlines)
         let view = UIView()
         AppTheme.applySurfaceStyle(
             to: view,
@@ -53,7 +55,7 @@ extension HistoryDetailViewController {
         contentStackView.addArrangedSubview(
             makeNoteField(
                 title: AppStrings.History.expression,
-                value: note.sourceExpression,
+                value: translatedExpression,
                 valueColor: AppTheme.accentColor,
                 valueFont: .systemFont(ofSize: 16, weight: .semibold)
             )
@@ -67,18 +69,19 @@ extension HistoryDetailViewController {
             )
         )
 
-        if !note.translatedExpression.isEmpty {
-            contentStackView.addArrangedSubview(
-                makeNoteField(
-                    title: AppStrings.History.translatedAs,
-                    value: note.translatedExpression,
-                    valueColor: AppTheme.labelColor,
-                    valueFont: .systemFont(ofSize: 15, weight: .medium)
-                )
+        contentStackView.addArrangedSubview(
+            makeNoteField(
+                title: AppStrings.History.originalExpression,
+                value: sourceExpression,
+                valueColor: AppTheme.labelColor,
+                valueFont: .systemFont(ofSize: 15, weight: .medium)
             )
+        )
+
+        if !translatedExpression.isEmpty {
+            contentStackView.addArrangedSubview(makeSaveButtonRow(for: note))
         }
 
-        contentStackView.addArrangedSubview(makeSaveButtonRow(for: note))
         view.addSubview(contentStackView)
 
         NSLayoutConstraint.activate([
@@ -140,7 +143,8 @@ extension HistoryDetailViewController {
     }
 
     private func confirmSave(_ note: DecodeNote) {
-        let message = note.sourceExpression.isEmpty ? nil : "\"\(note.sourceExpression)\""
+        let expression = note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines)
+        let message = expression.isEmpty ? nil : "\"\(expression)\""
         let alertController = UIAlertController(
             title: AppStrings.History.saveTitle,
             message: message,
@@ -150,7 +154,7 @@ extension HistoryDetailViewController {
         alertController.addAction(UIAlertAction(title: AppStrings.Common.yes, style: .default) { [weak self] _ in
             let result = SavedSlangStore.shared.save(
                 note,
-                sourceLanguage: self?.item?.sourceLanguage ?? "Unknown",
+                targetLanguage: self?.item?.targetLanguage ?? "Unknown",
                 meaningLanguage: note.meaningLanguage
             )
             UINotificationFeedbackGenerator().notificationOccurred(.success)
@@ -168,8 +172,9 @@ extension HistoryDetailViewController {
         }
 
         navigationItem.rightBarButtonItems = [makeDeleteHistoryBarButton()]
-        saveAllNotesButton?.isHidden = !hasNotes
-        saveAllNotesButton?.isEnabled = hasNotes
+        let hasSavableNotes = item?.notes.contains { !$0.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty } ?? false
+        saveAllNotesButton?.isHidden = !hasNotes || !hasSavableNotes
+        saveAllNotesButton?.isEnabled = hasNotes && hasSavableNotes
     }
 
     private func makeDeleteHistoryBarButton() -> UIBarButtonItem {
@@ -201,7 +206,11 @@ extension HistoryDetailViewController {
     }
 
     @IBAction func confirmSaveAllNotes(_ sender: Any) {
-        guard let item = item, !item.notes.isEmpty else { return }
+        guard let item = item else { return }
+        let savableNotes = item.notes.filter {
+            !$0.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
+        guard !savableNotes.isEmpty else { return }
 
         let alertController = UIAlertController(
             title: AppStrings.History.saveAllTitle,
@@ -210,10 +219,10 @@ extension HistoryDetailViewController {
         )
         alertController.addAction(UIAlertAction(title: AppStrings.Common.no, style: .cancel))
         alertController.addAction(UIAlertAction(title: AppStrings.Common.yes, style: .default) { [weak self] _ in
-            let results = item.notes.map {
+            let results = savableNotes.map {
                 SavedSlangStore.shared.save(
                     $0,
-                    sourceLanguage: item.sourceLanguage,
+                    targetLanguage: item.targetLanguage,
                     meaningLanguage: $0.meaningLanguage
                 )
             }

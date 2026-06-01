@@ -47,7 +47,7 @@
 "decode.loading.title" = "Decoding...";
 "decode.notes.detail.accessibility" = "Decode Notes Detail";
 "decode.note.language" = "English";
-"decode.note.line" = "• \"%@\" means \"%@\", translated as \"%@\".";
+"decode.note.line" = "• \"%@\" was translated as \"%@\".";
 "decode.note.line.noTranslation" = "• \"%@\" means \"%@\".";
 
 "language.auto" = "Auto";
@@ -73,6 +73,7 @@
 "history.detail.noNotes" = "No notes for this decode.";
 "history.note.expression" = "Expression";
 "history.note.meaning" = "Meaning";
+"history.note.originalExpression" = "Original Expression";
 "history.note.translatedAs" = "Translated As";
 "history.note.save" = "Save";
 "history.note.saveTitle" = "Save this note?";
@@ -95,8 +96,11 @@
 "savedSlang.example.full" = "Delete an example first.";
 "savedSlang.example.invalid" = "Could not save example.";
 "savedSlang.example.generate" = "Generate Example";
+"savedSlang.meanings.title" = "Meanings";
 "savedSlang.noMeanings" = "No meanings saved.";
-"savedSlang.noTranslations" = "No translations saved.";
+"savedSlang.originalExpressions.title" = "Original Expressions";
+"savedSlang.noOriginalExpressions" = "No original expressions saved.";
+"savedSlang.examples.title" = "Examples";
 "savedSlang.examples.loading" = "Generating examples...";
 "savedSlang.examples.error.blocked" = "Examples could not be generated safely.";
 "savedSlang.examples.error.generic" = "Could not generate examples.";
@@ -109,7 +113,7 @@
 "savedSlang.deleteAll.message" = "This will remove every saved expression. This cannot be undone.";
 "savedSlang.deleted" = "Deleted.";
 "savedSlang.allDeleted" = "All saved slangs deleted.";
-"savedSlang.metadata.updated" = "%@ → %@ · Updated %@";
+"savedSlang.metadata.updated" = "%@ · %@ meaning · Updated %@";
 "savedSlang.action.copy" = "Copy";
 "savedSlang.action.delete" = "Delete";
 "savedSlang.examples.empty" = "No examples generated yet.";
