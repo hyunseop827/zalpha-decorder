@@ -54,6 +54,8 @@ private struct LossySavedSlangArray: Decodable {
             do {
                 decodedItems.append(try container.decode(SavedSlang.self))
             } catch {
+                // Saved slang fields changed during local-only development. One stale
+                // record should not prevent the rest of the vocabulary from loading.
                 print("Skipped one invalid saved slang item:", error)
                 _ = try? container.decode(DiscardedSavedSlangValue.self)
             }

@@ -19,6 +19,39 @@ struct HistoryItem: Codable, Identifiable {
     let notes: [DecodeNote]
 }
 
+extension HistoryItem {
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case createdAt
+        case sourceLanguage
+        case targetLanguage
+        case style
+        case inputText
+        case outputText
+        case notes
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        id = try container.decode(UUID.self, forKey: .id)
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        sourceLanguage = try container.decode(String.self, forKey: .sourceLanguage)
+        targetLanguage = try container.decode(String.self, forKey: .targetLanguage)
+        style = try container.decode(String.self, forKey: .style)
+        inputText = try container.decode(String.self, forKey: .inputText)
+        outputText = try container.decode(String.self, forKey: .outputText)
+
+        // Older builds stored notes in different shapes. Keep the history row and drop
+        // only its notes when that payload can no longer be decoded.
+        if let decodedNotes = try? container.decode([DecodeNote].self, forKey: .notes) {
+            notes = decodedNotes
+        } else {
+            notes = []
+        }
+    }
+}
+
 /// Small UserDefaults-backed store for recent local decode history.
 final class HistoryStore {
     static let shared = HistoryStore()
@@ -38,7 +71,9 @@ final class HistoryStore {
         }
 
         do {
-            return try JSONDecoder().decode([HistoryItem].self, from: data)
+            return try JSONDecoder()
+                .decode([LossyHistoryItem].self, from: data)
+                .compactMap(\.item)
         } catch {
             print("Failed to load decode history:", error)
             return []
@@ -71,5 +106,14 @@ final class HistoryStore {
         } catch {
             print("Failed to save decode history:", error)
         }
+    }
+}
+
+private struct LossyHistoryItem: Decodable {
+    let item: HistoryItem?
+
+    init(from decoder: Decoder) throws {
+        // Skip only the malformed entry instead of making the whole History screen empty.
+        item = try? HistoryItem(from: decoder)
     }
 }

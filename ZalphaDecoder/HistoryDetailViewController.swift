@@ -67,10 +67,13 @@ final class HistoryDetailViewController: UIViewController {
             return
         }
 
+        let sourceLanguage = DecodeLanguage.localizedDisplayName(for: item.sourceLanguage)
+        let targetLanguage = DecodeLanguage.localizedDisplayName(for: item.targetLanguage)
+
         metadataLabel?.text = "\(HistoryDateFormatter.shortDateTime.string(from: item.createdAt)) · \(TranslationStyle.localizedDisplayName(for: item.style))"
-        inputTitleLabel?.text = AppStrings.History.inputTitle(item.sourceLanguage)
+        inputTitleLabel?.text = AppStrings.History.inputTitle(sourceLanguage)
         inputBodyLabel?.text = item.inputText
-        outputTitleLabel?.text = AppStrings.History.outputTitle(item.targetLanguage)
+        outputTitleLabel?.text = AppStrings.History.outputTitle(targetLanguage)
         outputBodyLabel?.text = item.outputText
         notesTitleLabel?.text = AppStrings.Main.notesTitle
         renderNotes(item.notes)

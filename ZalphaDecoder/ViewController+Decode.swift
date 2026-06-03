@@ -112,13 +112,13 @@ extension ViewController {
 
         let text = notes
             .prefix(5)
-            .filter { !$0.sourceExpression.isEmpty && !$0.meaning.isEmpty }
+            .filter { !$0.originalExpression.isEmpty && !$0.meaning.isEmpty }
             .map { note in
                 AppStrings.Decode.noteLine(
-                    sourceExpression: note.sourceExpression,
+                    originalExpression: note.originalExpression,
                     meaning: note.meaning,
                     meaningLanguage: note.meaningLanguage,
-                    translatedExpression: note.translatedExpression
+                    expression: note.expression
                 )
             }
             .joined(separator: "\n")

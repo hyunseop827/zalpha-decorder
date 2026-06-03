@@ -41,8 +41,8 @@ final class SavedSlangCell: UITableViewCell {
         expressionLabel.text = item.expression
         meaningLabel.text = AppStrings.SavedSlang.meaningPreview(item.meanings.first ?? "")
         metadataLabel.text = AppStrings.SavedSlang.metadata(
-            expressionLanguage: item.expressionLanguage,
-            meaningLanguage: item.meaningLanguage,
+            expressionLanguage: DecodeLanguage.localizedDisplayName(for: item.expressionLanguage),
+            meaningLanguage: DecodeLanguage.localizedDisplayName(for: item.meaningLanguage),
             date: HistoryDateFormatter.shortDateTime.string(from: item.updatedAt)
         )
         applyDynamicColors()

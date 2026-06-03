@@ -40,7 +40,6 @@ extension SavedSlangsViewController: UISearchResultsUpdating {
                 || item.expressionLanguage.lowercased().contains(query)
                 || item.meaningLanguage.lowercased().contains(query)
                 || item.meanings.contains { $0.lowercased().contains(query) }
-                || item.originalExpressions.contains { $0.lowercased().contains(query) }
                 || item.examples.contains {
                     $0.sentence.lowercased().contains(query) || $0.meaning.lowercased().contains(query)
                 }

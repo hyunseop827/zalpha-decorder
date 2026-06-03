@@ -5,6 +5,8 @@
 //  Created by 김현섭 on 5/6/26.
 //
 
+import Foundation
+
 /// Supported language options shown in the source and target menus.
 enum DecodeLanguage: CaseIterable {
     case auto
@@ -50,4 +52,27 @@ enum DecodeLanguage: CaseIterable {
 
     static let sourceOptions: [DecodeLanguage] = [.auto, .english, .korean, .japanese, .spanish, .russian]
     static let targetOptions: [DecodeLanguage] = [.english, .korean, .japanese, .spanish, .russian]
+
+    init?(storedName: String) {
+        switch storedName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() {
+        case "auto":
+            self = .auto
+        case "english", "영어":
+            self = .english
+        case "korean", "한국어":
+            self = .korean
+        case "japanese", "일본어":
+            self = .japanese
+        case "spanish", "스페인어":
+            self = .spanish
+        case "russian", "러시아어":
+            self = .russian
+        default:
+            return nil
+        }
+    }
+
+    static func localizedDisplayName(for storedName: String) -> String {
+        DecodeLanguage(storedName: storedName)?.localizedDisplayName ?? storedName
+    }
 }

@@ -17,9 +17,6 @@ final class SavedSlangDetailViewController: UIViewController {
     @IBOutlet weak var meaningsCardView: UIView!
     @IBOutlet weak var meaningsTitleLabel: UILabel?
     @IBOutlet weak var meaningsStackView: UIStackView!
-    @IBOutlet weak var translationsCardView: UIView!
-    @IBOutlet weak var originalExpressionsTitleLabel: UILabel?
-    @IBOutlet weak var translationsStackView: UIStackView!
     @IBOutlet weak var examplesCardView: UIView!
     @IBOutlet weak var examplesTitleLabel: UILabel?
     @IBOutlet weak var examplesStackView: UIStackView!
@@ -64,7 +61,6 @@ final class SavedSlangDetailViewController: UIViewController {
 
     func renderItem() {
         meaningsTitleLabel?.text = AppStrings.SavedSlang.meaningsTitle
-        originalExpressionsTitleLabel?.text = AppStrings.SavedSlang.originalExpressionsTitle
         examplesTitleLabel?.text = AppStrings.SavedSlang.examplesTitle
         generateExamplesButton.setTitle(AppStrings.SavedSlang.generateExample, for: .normal)
 
@@ -72,12 +68,11 @@ final class SavedSlangDetailViewController: UIViewController {
 
         expressionLabel.text = item.expression
         metadataLabel.text = AppStrings.SavedSlang.metadata(
-            expressionLanguage: item.expressionLanguage,
-            meaningLanguage: item.meaningLanguage,
+            expressionLanguage: DecodeLanguage.localizedDisplayName(for: item.expressionLanguage),
+            meaningLanguage: DecodeLanguage.localizedDisplayName(for: item.meaningLanguage),
             date: HistoryDateFormatter.shortDateTime.string(from: item.updatedAt)
         )
         renderValues(item.meanings, in: meaningsStackView, emptyText: AppStrings.SavedSlang.noMeanings)
-        renderValues(item.originalExpressions, in: translationsStackView, emptyText: AppStrings.SavedSlang.noOriginalExpressions)
         renderExamples(item.examples)
     }
 }

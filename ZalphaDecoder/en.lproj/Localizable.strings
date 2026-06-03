@@ -9,7 +9,6 @@
 "main.notes.title" = "Decode Notes";
 "main.style.formal" = "Formal";
 "main.style.plain" = "Plain";
-"main.style.casual" = "Casual";
 "main.style.zalpha" = "Zalpha";
 "main.input.title" = "Input - %@";
 "main.output.title" = "Output - %@";
@@ -74,7 +73,6 @@
 "history.note.expression" = "Expression";
 "history.note.meaning" = "Meaning";
 "history.note.originalExpression" = "Original Expression";
-"history.note.translatedAs" = "Translated As";
 "history.note.save" = "Save";
 "history.note.saveTitle" = "Save this note?";
 "history.note.saveAll" = "Save All";
@@ -98,8 +96,6 @@
 "savedSlang.example.generate" = "Generate Example";
 "savedSlang.meanings.title" = "Meanings";
 "savedSlang.noMeanings" = "No meanings saved.";
-"savedSlang.originalExpressions.title" = "Original Expressions";
-"savedSlang.noOriginalExpressions" = "No original expressions saved.";
 "savedSlang.examples.title" = "Examples";
 "savedSlang.examples.loading" = "Generating examples...";
 "savedSlang.examples.error.blocked" = "Examples could not be generated safely.";

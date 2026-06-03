@@ -38,7 +38,7 @@ extension SavedSlangDetailViewController {
         exampleIDs = visibleExamples.map(\.id)
 
         guard !visibleExamples.isEmpty else {
-            examplesStackView.addArrangedSubview(makeValueLabel("No examples generated yet.", isEmptyState: true))
+            examplesStackView.addArrangedSubview(makeValueLabel(AppStrings.SavedSlang.noExamples, isEmptyState: true))
             return
         }
 

@@ -26,7 +26,6 @@ extension SavedSlangDetailViewController {
         expressionCopyButton.tintColor = AppTheme.accentColor
         metadataLabel.textColor = AppTheme.secondaryLabelColor
         meaningsTitleLabel?.textColor = AppTheme.labelColor
-        originalExpressionsTitleLabel?.textColor = AppTheme.labelColor
         examplesTitleLabel?.textColor = AppTheme.labelColor
         generateExamplesButton.tintColor = AppTheme.accentColor
         examplesLoadingOverlayView.backgroundColor = AppTheme.loadingOverlayColor
@@ -36,7 +35,7 @@ extension SavedSlangDetailViewController {
         examplesLoadingLabel.text = AppStrings.SavedSlang.examplesLoadingTitle
         examplesLoadingLabel.textColor = AppTheme.labelColor
 
-        [meaningsCardView, translationsCardView, examplesCardView].forEach {
+        [meaningsCardView, examplesCardView].forEach {
             $0?.backgroundColor = AppTheme.cardBackgroundColor
             $0?.layer.borderColor = AppTheme.borderColor.cgColor
             AppTheme.applyShadow(AppTheme.detailCardShadow, to: $0)
@@ -48,7 +47,7 @@ extension SavedSlangDetailViewController {
     }
 
     func configureCards() {
-        [meaningsCardView, translationsCardView, examplesCardView].forEach {
+        [meaningsCardView, examplesCardView].forEach {
             AppTheme.applyCardStyle(
                 to: $0,
                 cornerRadius: 14,
@@ -69,7 +68,6 @@ extension SavedSlangDetailViewController {
     func updateShadowPaths() {
         AppTheme.updateShadowPaths(for: [
             meaningsCardView,
-            translationsCardView,
             examplesCardView,
             examplesLoadingCardView
         ])

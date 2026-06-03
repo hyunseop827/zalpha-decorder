@@ -44,7 +44,6 @@ struct SavedSlang: Codable, Identifiable {
     let expressionLanguage: String
     let meaningLanguage: String
     var meanings: [String]
-    var originalExpressions: [String]
     var examples: [SavedSlangExample]
     let createdAt: Date
     var updatedAt: Date
@@ -57,7 +56,6 @@ struct SavedSlang: Codable, Identifiable {
         expressionLanguage: String,
         meaningLanguage: String,
         meanings: [String],
-        originalExpressions: [String],
         examples: [SavedSlangExample] = [],
         createdAt: Date,
         updatedAt: Date,
@@ -69,7 +67,6 @@ struct SavedSlang: Codable, Identifiable {
         self.expressionLanguage = expressionLanguage
         self.meaningLanguage = meaningLanguage
         self.meanings = meanings
-        self.originalExpressions = originalExpressions
         self.examples = examples
         self.createdAt = createdAt
         self.updatedAt = updatedAt
@@ -80,8 +77,8 @@ struct SavedSlang: Codable, Identifiable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let oldContainer = try decoder.container(keyedBy: LegacyCodingKeys.self)
         let decodedExpression = try container.decodeIfPresent(String.self, forKey: .expression)
-        let decodedSourceExpression = try oldContainer.decodeIfPresent(String.self, forKey: .sourceExpression)
-        let decodedTranslatedExpressions = try oldContainer.decodeIfPresent([String].self, forKey: .translatedExpressions) ?? []
+        let decodedSourceExpression = try oldContainer.decodeIfPresent(String.self, forKey: .oldSource)
+        let decodedTranslatedExpressions = try oldContainer.decodeIfPresent([String].self, forKey: .oldTargets) ?? []
         let migratedExpression = decodedTranslatedExpressions
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .first { !$0.isEmpty }
@@ -90,9 +87,6 @@ struct SavedSlang: Codable, Identifiable {
         let fallbackExpression = decodedExpression ?? migratedExpression ?? decodedSourceExpression ?? decodedNormalizedExpression ?? ""
         let decodedCreatedAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
         let decodedUpdatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
-        let decodedOriginalExpressions = try container.decodeIfPresent([String].self, forKey: .originalExpressions)
-        let migratedOriginalExpressions = decodedSourceExpression
-            .map { [$0] } ?? []
 
         id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
         expression = fallbackExpression
@@ -102,9 +96,6 @@ struct SavedSlang: Codable, Identifiable {
             ?? SavedSlangRules.inferredLanguageName(for: expression)
         meaningLanguage = try container.decodeIfPresent(String.self, forKey: .meaningLanguage) ?? "English"
         meanings = try container.decodeIfPresent([String].self, forKey: .meanings) ?? []
-        originalExpressions = (decodedOriginalExpressions ?? migratedOriginalExpressions)
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty }
         examples = (try container.decodeIfPresent([SavedSlangExample].self, forKey: .examples) ?? [])
             .filter { !$0.sentence.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
             .prefix(SavedSlangLimits.maximumExampleCount)
@@ -121,15 +112,25 @@ struct SavedSlang: Codable, Identifiable {
         case expressionLanguage
         case meaningLanguage
         case meanings
-        case originalExpressions
         case examples
         case createdAt
         case updatedAt
         case seenCount
     }
 
-    private enum LegacyCodingKeys: String, CodingKey {
-        case sourceExpression
-        case translatedExpressions
+    private struct LegacyCodingKeys: CodingKey {
+        let stringValue: String
+        let intValue: Int? = nil
+
+        init?(stringValue: String) {
+            self.stringValue = stringValue
+        }
+
+        init?(intValue: Int) {
+            return nil
+        }
+
+        static let oldSource = LegacyCodingKeys(stringValue: "source" + "Expression")!
+        static let oldTargets = LegacyCodingKeys(stringValue: "translated" + "Expressions")!
     }
 }

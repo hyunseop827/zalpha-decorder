@@ -2,18 +2,18 @@
 
 Zalpha Decoder is a Storyboard-based UIKit iOS app that decodes slang, idioms, and short expressions into clearer style-aware translations.
 
-AI responses are implemented with Firebase AI Logic and Gemini. The app also stores local decode history and saved slang notes for later review.
+AI responses are implemented with Firebase AI Logic and Gemini. The app also stores local decode history and saved target-language expressions for later review.
 
 ## Features
 
 - Decode short text with Firebase AI Logic + Gemini
-- Source language: `Auto`, `English`, `Korean`, `Japanese`, `Spanish`, `Russian`
-- Target language: `English`, `Korean`, `Japanese`, `Spanish`, `Russian`
-- Style selection: `Formal`, `Plain`, `Casual`, `Zalpha`
+- Source language: `Auto`, `English`, `한국어`, `Japanese`, `Spanish`, `Russian`
+- Target language: `English`, `한국어`, `Japanese`, `Spanish`, `Russian`
+- Style selection: `Formal`, `Plain`, `Zalpha`
 - AI-generated notes for meaningful slang, idioms, meme expressions, abbreviations, and culturally loaded phrases
 - Local History screen with decode details
-- Saved Slangs screen with search, detail view, examples, copy, and delete actions
-- Example generation for saved slang expressions
+- Saved Slangs screen with search, detail view, generated examples, copy, and delete actions
+- One-at-a-time example generation for saved expressions
 - 100-character input limit
 - Copy and toast feedback
 - Light and dark mode UI support
@@ -21,11 +21,11 @@ AI responses are implemented with Firebase AI Logic and Gemini. The app also sto
 
 ## Screenshots
 
-Screenshot files are intentionally not included yet. Add them later under `docs/images/` and update these placeholder paths if needed.
+| Light | Dark |
+| --- | --- |
+| ![Zalpha Decoder light mode](assets/screen-light.png) | ![Zalpha Decoder dark mode](assets/screen-dark.png) |
 
-| Main | History | Saved Slangs |
-| --- | --- | --- |
-| `docs/images/main.png` | `docs/images/history.png` | `docs/images/saved-slangs.png` |
+Additional History and Saved Slangs screenshots can be added later if needed.
 
 ## Tech Stack
 
@@ -45,7 +45,7 @@ ZalphaDecoder/
   AIServicePromptBuilder.swift            # Decode and example-generation prompts
   AIServiceResponseParser.swift           # JSON response parsing
   DecodeLanguage.swift                    # Supported language options
-  TranslationStyle.swift                  # Formal, Plain, Casual, Zalpha styles
+  TranslationStyle.swift                  # Formal, Plain, Zalpha styles
   ViewController.swift                    # Main decode screen
   HistoryViewController.swift             # Local decode history list
   HistoryDetailViewController.swift       # Decode detail and notes

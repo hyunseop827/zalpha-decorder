@@ -97,7 +97,7 @@
                                                                 <rect key="frame" x="0.0" y="115.66666666666669" width="364" height="56"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ma-ss-ZdE" userLabel="Formal">
-                                                                        <rect key="frame" x="0.0" y="12" width="85" height="32"/>
+                                                                        <rect key="frame" x="0.0" y="12" width="116" height="32"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <state key="normal" title="Formal"/>
@@ -106,7 +106,7 @@
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KDb-oz-Wea" userLabel="Plain">
-                                                                        <rect key="frame" x="93" y="12" width="85" height="32"/>
+                                                                        <rect key="frame" x="124" y="12" width="116" height="32"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <state key="normal" title="Plain"/>
@@ -114,17 +114,8 @@
                                                                             <action selector="styleButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ij2-N1-1nA"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vYW-sp-shz" userLabel="Casual">
-                                                                        <rect key="frame" x="186" y="12" width="85" height="32"/>
-                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                                                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                        <state key="normal" title="Casual"/>
-                                                                        <connections>
-                                                                            <action selector="styleButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fF9-Xu-Ogv"/>
-                                                                        </connections>
-                                                                    </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wmw-R9-WdA" userLabel="Zalpha">
-                                                                        <rect key="frame" x="279" y="12" width="85" height="32"/>
+                                                                        <rect key="frame" x="248" y="12" width="116" height="32"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <state key="normal" title="Zalpha"/>
@@ -378,7 +369,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="casualStyleButton" destination="vYW-sp-shz" id="rqy-fD-Uy1"/>
                         <outlet property="characterCountLabel" destination="FSs-J2-WSG" id="OzG-bc-c4b"/>
                         <outlet property="cleanStyleButton" destination="1ma-ss-ZdE" id="pdK-JM-GgA"/>
                         <outlet property="contentView" destination="v0j-jQ-st7" id="G28-Ee-Mlc"/>
@@ -616,7 +606,7 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="zM7-vg-A1a" userLabel="Saved Slang Card Stack View">
                                                             <rect key="frame" x="14" y="14" width="360" height="72"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="조졌다" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ByC-u4-usJ" userLabel="Expression Label">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="cooked" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ByC-u4-usJ" userLabel="Expression Label">
                                                                     <rect key="frame" x="0.0" y="0.0" width="360" height="28.666666666666668"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="kze-6z-4cn"/>
@@ -718,7 +708,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="WXh-Oq-prH" userLabel="Expression Row">
                                                         <rect key="frame" x="0.0" y="0.0" width="380" height="38.333333333333336"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="250" verticalHuggingPriority="251" text="조졌다" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uvw-cD-q5h" userLabel="Expression Label">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="250" verticalHuggingPriority="251" text="cooked" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uvw-cD-q5h" userLabel="Expression Label">
                                                                 <rect key="frame" x="0.0" y="0.0" width="336" height="38.333333333333336"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="32"/>
                                                                 <color key="textColor" red="1" green="0.27058823529999998" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -778,38 +768,6 @@
                                                             <constraint firstAttribute="trailing" secondItem="Vnw-Li-GwY" secondAttribute="trailing" constant="16" id="WUx-kg-34Y"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b3H-8x-xeD" userLabel="Original Expressions Card View">
-                                                        <rect key="frame" x="0.0" y="249.66666666666669" width="380" height="163.33333333333331"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Original Expressions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="odD-DS-q1G" userLabel="Original Expressions Title Label">
-                                                                <rect key="frame" x="16" y="15.999999999999998" width="348" height="20.333333333333329"/>
-                                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                                <nil key="textColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ikW-Q8-3IR" userLabel="Original Expressions Stack View">
-                                                                <rect key="frame" x="16" y="50.333333333333314" width="348" height="97"/>
-                                                                <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1. ruined" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TR8-2D-iT7">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="348" height="97"/>
-                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                                                        <nil key="textColor"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                </subviews>
-                                                            </stackView>
-                                                        </subviews>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                        <constraints>
-                                                            <constraint firstItem="ikW-Q8-3IR" firstAttribute="top" secondItem="odD-DS-q1G" secondAttribute="bottom" constant="14" id="4pZ-9j-DC1"/>
-                                                            <constraint firstItem="odD-DS-q1G" firstAttribute="top" secondItem="b3H-8x-xeD" secondAttribute="top" constant="16" id="Orq-Hp-ePS"/>
-                                                            <constraint firstItem="odD-DS-q1G" firstAttribute="leading" secondItem="b3H-8x-xeD" secondAttribute="leading" constant="16" id="Q6q-CB-3rH"/>
-                                                            <constraint firstAttribute="bottom" secondItem="ikW-Q8-3IR" secondAttribute="bottom" constant="16" id="UgS-wf-5st"/>
-                                                            <constraint firstItem="ikW-Q8-3IR" firstAttribute="leading" secondItem="b3H-8x-xeD" secondAttribute="leading" constant="16" id="Yj5-tC-M3b"/>
-                                                            <constraint firstAttribute="trailing" secondItem="odD-DS-q1G" secondAttribute="trailing" constant="16" id="c1f-1x-n4c"/>
-                                                            <constraint firstAttribute="trailing" secondItem="ikW-Q8-3IR" secondAttribute="trailing" constant="16" id="qg3-rk-rTh"/>
-                                                        </constraints>
-                                                    </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZQh-vh-e6A" userLabel="Examples Card View">
                                                         <rect key="frame" x="0.0" y="429" width="380" height="189"/>
                                                         <subviews>
@@ -841,7 +799,7 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="JvC-wx-v3y" userLabel="Examples Stack View">
                                                                 <rect key="frame" x="16" y="100.33333333333331" width="348" height="72.666666666666686"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No examples generated yet." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="seH-6w-eiI" userLabel="Examples Empty Label">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="seH-6w-eiI" userLabel="Examples Empty Label">
                                                                         <rect key="frame" x="0.0" y="0.0" width="348" height="72.666666666666686"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                                         <color key="textColor" systemColor="secondaryLabelColor"/>
@@ -964,10 +922,7 @@
                         <outlet property="meaningsStackView" destination="Sij-CY-ccn" id="OgJ-ZK-xnA"/>
                         <outlet property="meaningsTitleLabel" destination="Vnw-Li-GwY" id="n9L-eL-GwY"/>
                         <outlet property="metadataLabel" destination="mUJ-BB-n5g" id="O7U-hw-gxe"/>
-                        <outlet property="originalExpressionsTitleLabel" destination="odD-DS-q1G" id="o9L-eL-q1G"/>
                         <outlet property="scrollView" destination="Pz7-qr-U7n" id="tT5-Yw-1HQ"/>
-                        <outlet property="translationsCardView" destination="b3H-8x-xeD" id="vlx-FG-i10"/>
-                        <outlet property="translationsStackView" destination="ikW-Q8-3IR" id="Z6a-dU-g86"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQo-1B-Rb9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

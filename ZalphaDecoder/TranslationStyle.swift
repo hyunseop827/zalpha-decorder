@@ -11,17 +11,14 @@ import Foundation
 enum TranslationStyle {
     case formal
     case plain
-    case casual
     case genZalpha
 
     init?(storedName: String) {
         switch storedName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() {
         case "formal", "격식":
             self = .formal
-        case "plain", "기본":
+        case "plain", "기본", "casual", "캐주얼":
             self = .plain
-        case "casual", "캐주얼":
-            self = .casual
         case "zalpha", "gen zalpha", "잘파":
             self = .genZalpha
         default:
@@ -35,8 +32,6 @@ enum TranslationStyle {
             return "Formal"
         case .plain:
             return "Plain"
-        case .casual:
-            return "Casual"
         case .genZalpha:
             return "Zalpha"
         }
@@ -48,8 +43,6 @@ enum TranslationStyle {
             return AppStrings.Main.formalStyle
         case .plain:
             return AppStrings.Main.plainStyle
-        case .casual:
-            return AppStrings.Main.casualStyle
         case .genZalpha:
             return AppStrings.Main.zalphaStyle
         }

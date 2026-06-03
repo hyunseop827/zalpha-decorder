@@ -33,7 +33,6 @@ enum AppStrings {
         static let noCurrentDecode = AppStrings.localized("main.notes.noCurrentDecode")
         static let formalStyle = AppStrings.localized("main.style.formal")
         static let plainStyle = AppStrings.localized("main.style.plain")
-        static let casualStyle = AppStrings.localized("main.style.casual")
         static let zalphaStyle = AppStrings.localized("main.style.zalpha")
 
         static func inputTitle(_ language: String) -> String {
@@ -61,13 +60,6 @@ enum AppStrings {
             AppStrings.format("decode.error.sourceMismatch", language)
         }
 
-        static func noteLine(sourceExpression: String, meaning: String, translatedExpression: String) -> String {
-            guard !translatedExpression.isEmpty else {
-                return AppStrings.format("decode.note.line.noTranslation", sourceExpression, meaning)
-            }
-
-            return AppStrings.format("decode.note.line", sourceExpression, translatedExpression)
-        }
     }
 
     enum History {
@@ -86,7 +78,6 @@ enum AppStrings {
         static let expression = AppStrings.localized("history.note.expression")
         static let meaning = AppStrings.localized("history.note.meaning")
         static let originalExpression = AppStrings.localized("history.note.originalExpression")
-        static let translatedAs = AppStrings.localized("history.note.translatedAs")
         static let save = AppStrings.localized("history.note.save")
         static let saveTitle = AppStrings.localized("history.note.saveTitle")
         static let saveAll = AppStrings.localized("history.note.saveAll")
@@ -129,8 +120,6 @@ enum AppStrings {
         static let generateExample = AppStrings.localized("savedSlang.example.generate")
         static let meaningsTitle = AppStrings.localized("savedSlang.meanings.title")
         static let noMeanings = AppStrings.localized("savedSlang.noMeanings")
-        static let originalExpressionsTitle = AppStrings.localized("savedSlang.originalExpressions.title")
-        static let noOriginalExpressions = AppStrings.localized("savedSlang.noOriginalExpressions")
         static let examplesTitle = AppStrings.localized("savedSlang.examples.title")
         static let examplesLoadingTitle = AppStrings.localized("savedSlang.examples.loading")
         static let examplesBlocked = AppStrings.localized("savedSlang.examples.error.blocked")
@@ -176,15 +165,15 @@ enum AppStrings {
 
 extension AppStrings.Decode {
     static func noteLine(
-        sourceExpression: String,
+        originalExpression: String,
         meaning: String,
         meaningLanguage: String,
-        translatedExpression: String
+        expression: String
     ) -> String {
-        guard !translatedExpression.isEmpty else {
-            return AppStrings.format("decode.note.line.noTranslation", sourceExpression, meaning)
+        guard !expression.isEmpty else {
+            return AppStrings.format("decode.note.line.noTranslation", originalExpression, meaning)
         }
 
-        return AppStrings.format("decode.note.line", sourceExpression, translatedExpression)
+        return AppStrings.format("decode.note.line", originalExpression, expression)
     }
 }

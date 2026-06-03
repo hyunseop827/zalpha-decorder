@@ -38,8 +38,8 @@ extension HistoryDetailViewController {
     }
 
     private func makeNoteView(_ note: DecodeNote) -> UIView {
-        let translatedExpression = note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines)
-        let sourceExpression = note.sourceExpression.trimmingCharacters(in: .whitespacesAndNewlines)
+        let expression = note.expression.trimmingCharacters(in: .whitespacesAndNewlines)
+        let originalExpression = note.originalExpression.trimmingCharacters(in: .whitespacesAndNewlines)
         let view = UIView()
         AppTheme.applySurfaceStyle(
             to: view,
@@ -55,7 +55,7 @@ extension HistoryDetailViewController {
         contentStackView.addArrangedSubview(
             makeNoteField(
                 title: AppStrings.History.expression,
-                value: translatedExpression,
+                value: expression,
                 valueColor: AppTheme.accentColor,
                 valueFont: .systemFont(ofSize: 16, weight: .semibold)
             )
@@ -72,13 +72,13 @@ extension HistoryDetailViewController {
         contentStackView.addArrangedSubview(
             makeNoteField(
                 title: AppStrings.History.originalExpression,
-                value: sourceExpression,
+                value: originalExpression,
                 valueColor: AppTheme.labelColor,
                 valueFont: .systemFont(ofSize: 15, weight: .medium)
             )
         )
 
-        if !translatedExpression.isEmpty {
+        if !expression.isEmpty {
             contentStackView.addArrangedSubview(makeSaveButtonRow(for: note))
         }
 
@@ -143,7 +143,7 @@ extension HistoryDetailViewController {
     }
 
     private func confirmSave(_ note: DecodeNote) {
-        let expression = note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines)
+        let expression = note.expression.trimmingCharacters(in: .whitespacesAndNewlines)
         let message = expression.isEmpty ? nil : "\"\(expression)\""
         let alertController = UIAlertController(
             title: AppStrings.History.saveTitle,
@@ -172,7 +172,7 @@ extension HistoryDetailViewController {
         }
 
         navigationItem.rightBarButtonItems = [makeDeleteHistoryBarButton()]
-        let hasSavableNotes = item?.notes.contains { !$0.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty } ?? false
+        let hasSavableNotes = item?.notes.contains { !$0.expression.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty } ?? false
         saveAllNotesButton?.isHidden = !hasNotes || !hasSavableNotes
         saveAllNotesButton?.isEnabled = hasNotes && hasSavableNotes
     }
@@ -208,7 +208,7 @@ extension HistoryDetailViewController {
     @IBAction func confirmSaveAllNotes(_ sender: Any) {
         guard let item = item else { return }
         let savableNotes = item.notes.filter {
-            !$0.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            !$0.expression.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
         guard !savableNotes.isEmpty else { return }
 

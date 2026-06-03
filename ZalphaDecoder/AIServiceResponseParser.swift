@@ -26,17 +26,22 @@ struct AIServiceResponseParser {
                 notes: validatedNotes(
                     decodedResult.notes
                     .map { note in
+                        let rawMeaningLanguage = note.meaningLanguage?
+                            .trimmingCharacters(in: .whitespacesAndNewlines)
+                        let resolvedMeaningLanguage = rawMeaningLanguage.flatMap {
+                            $0.isEmpty ? nil : $0
+                        } ?? noteLanguage
                         return DecodeNote(
-                            sourceExpression: note.sourceExpression.trimmingCharacters(in: .whitespacesAndNewlines),
+                            expression: note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines),
                             meaning: note.meaning.trimmingCharacters(in: .whitespacesAndNewlines),
-                            meaningLanguage: noteLanguage,
-                            translatedExpression: note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines)
+                            meaningLanguage: resolvedMeaningLanguage,
+                            originalExpression: note.sourceExpression.trimmingCharacters(in: .whitespacesAndNewlines)
                         )
                     }
                     .filter {
-                        !$0.sourceExpression.isEmpty
+                        !$0.originalExpression.isEmpty
                             && !$0.meaning.isEmpty
-                            && !$0.translatedExpression.isEmpty
+                            && !$0.expression.isEmpty
                     },
                     sourceText: sourceText
                 )
@@ -119,11 +124,12 @@ struct AIServiceResponseParser {
         let normalizedSourceText = normalizeForContainment(sourceText)
         var seenExpressions = Set<String>()
         let validNotes = notes.filter { note in
-            let normalizedExpression = normalizeForContainment(note.sourceExpression)
+            let normalizedExpression = normalizeForContainment(note.originalExpression)
 
             guard !normalizedExpression.isEmpty,
-                  !isTooBroadExpression(note.sourceExpression, sourceText: sourceText),
-                  !isGenericExplanation(note.meaning) else {
+                  !isTooBroadExpression(note.originalExpression, sourceText: sourceText),
+                  !isGenericExplanation(note.meaning),
+                  !isTooBasicTargetExpression(note.expression) else {
                 return false
             }
 
@@ -131,7 +137,7 @@ struct AIServiceResponseParser {
         }
 
         let matchingNotes = validNotes.filter {
-            normalizedSourceText.contains(normalizeForContainment($0.sourceExpression))
+            normalizedSourceText.contains(normalizeForContainment($0.originalExpression))
         }
 
         return matchingNotes.isEmpty ? validNotes : matchingNotes
@@ -178,6 +184,27 @@ struct AIServiceResponseParser {
         ]
 
         return genericFragments.contains { normalizedMeaning.contains($0) }
+    }
+
+    private func isTooBasicTargetExpression(_ expression: String) -> Bool {
+        let normalizedExpression = normalizeForContainment(expression)
+        let basicExpressions = Set([
+            "really",
+            "very",
+            "so",
+            "actually",
+            "just",
+            "thing",
+            "things",
+            "good",
+            "bad",
+            "yes",
+            "no",
+            "okay",
+            "ok"
+        ])
+
+        return basicExpressions.contains(normalizedExpression)
     }
 
     private func normalizeForContainment(_ value: String) -> String {

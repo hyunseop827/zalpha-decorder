@@ -118,7 +118,6 @@ extension ViewController {
         let buttons: [UIButton] = [
             cleanStyleButton,
             plainStyleButton,
-            casualStyleButton,
             genZalphaStyleButton
         ]
 
@@ -191,7 +190,7 @@ extension ViewController {
 
     /// Updates shadow paths after views have final bounds.
     func updateShadowPaths() {
-        [mainCardView, inputCardView, outputCardView, notesCardView, sourceLanguageButton, swapLanguageButton, targetLanguageButton, cleanStyleButton, plainStyleButton, casualStyleButton, genZalphaStyleButton, loadingCardView].forEach {
+        [mainCardView, inputCardView, outputCardView, notesCardView, sourceLanguageButton, swapLanguageButton, targetLanguageButton, cleanStyleButton, plainStyleButton, genZalphaStyleButton, loadingCardView].forEach {
             guard let view = $0 else { return }
             view.layer.shadowPath = UIBezierPath(roundedRect: view.bounds, cornerRadius: view.layer.cornerRadius).cgPath
         }

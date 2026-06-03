@@ -24,7 +24,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var cleanStyleButton: UIButton!
     @IBOutlet weak var plainStyleButton: UIButton!
-    @IBOutlet weak var casualStyleButton: UIButton!
     @IBOutlet weak var genZalphaStyleButton: UIButton!
     @IBOutlet weak var decodeButton: UIButton!
 
@@ -94,8 +93,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             selectedStyle = .formal
         case plainStyleButton:
             selectedStyle = .plain
-        case casualStyleButton:
-            selectedStyle = .casual
         case genZalphaStyleButton:
             selectedStyle = .genZalpha
         default:
@@ -157,7 +154,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         let styles: [(TranslationStyle, UIButton)] = [
             (.formal, cleanStyleButton),
             (.plain, plainStyleButton),
-            (.casual, casualStyleButton),
             (.genZalpha, genZalphaStyleButton)
         ]
 
@@ -195,7 +191,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         styleLabel.text = AppStrings.Main.style
         cleanStyleButton.setTitle(TranslationStyle.formal.localizedDisplayName, for: .normal)
         plainStyleButton.setTitle(TranslationStyle.plain.localizedDisplayName, for: .normal)
-        casualStyleButton.setTitle(TranslationStyle.casual.localizedDisplayName, for: .normal)
         genZalphaStyleButton.setTitle(TranslationStyle.genZalpha.localizedDisplayName, for: .normal)
         decodeButton.setTitle(AppStrings.Main.decodeButton, for: .normal)
         notesTitleLabel.text = AppStrings.Main.notesTitle

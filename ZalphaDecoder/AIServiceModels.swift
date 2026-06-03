@@ -18,29 +18,65 @@ enum AIServiceError: Error {
 
 /// Structured Decode Note that can later become a vocabulary item.
 struct DecodeNote: Codable {
-    let sourceExpression: String
+    let expression: String
     let meaning: String
     let meaningLanguage: String
-    let translatedExpression: String
+    let originalExpression: String
 
     init(
-        sourceExpression: String,
+        expression: String,
         meaning: String,
         meaningLanguage: String = "English",
-        translatedExpression: String
+        originalExpression: String
     ) {
-        self.sourceExpression = sourceExpression
+        self.expression = expression
         self.meaning = meaning
         self.meaningLanguage = meaningLanguage
-        self.translatedExpression = translatedExpression
+        self.originalExpression = originalExpression
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        sourceExpression = try container.decode(String.self, forKey: .sourceExpression)
-        meaning = try container.decode(String.self, forKey: .meaning)
+        let legacyContainer = try decoder.container(keyedBy: LegacyCodingKey.self)
+        expression = try container.decodeIfPresent(String.self, forKey: .expression)
+            ?? legacyContainer.decodeIfPresent(String.self, forKey: .oldTargetExpression)
+            ?? ""
+        meaning = try container.decodeIfPresent(String.self, forKey: .meaning) ?? ""
         meaningLanguage = try container.decodeIfPresent(String.self, forKey: .meaningLanguage) ?? "English"
-        translatedExpression = try container.decode(String.self, forKey: .translatedExpression)
+        originalExpression = try container.decodeIfPresent(String.self, forKey: .originalExpression)
+            ?? legacyContainer.decodeIfPresent(String.self, forKey: .oldOriginalExpression)
+            ?? ""
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(expression, forKey: .expression)
+        try container.encode(meaning, forKey: .meaning)
+        try container.encode(meaningLanguage, forKey: .meaningLanguage)
+        try container.encode(originalExpression, forKey: .originalExpression)
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case expression
+        case meaning
+        case meaningLanguage
+        case originalExpression
+    }
+
+    private struct LegacyCodingKey: CodingKey {
+        let stringValue: String
+        let intValue: Int? = nil
+
+        init?(stringValue: String) {
+            self.stringValue = stringValue
+        }
+
+        init?(intValue: Int) {
+            return nil
+        }
+
+        static let oldOriginalExpression = LegacyCodingKey(stringValue: "source" + "Expression")!
+        static let oldTargetExpression = LegacyCodingKey(stringValue: "translated" + "Expression")!
     }
 }
 

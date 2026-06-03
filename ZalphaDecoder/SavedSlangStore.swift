@@ -25,8 +25,7 @@ final class SavedSlangStore {
     /// Saves one Decode Note by its target-language expression.
     @discardableResult
     func save(_ note: DecodeNote, targetLanguage: String, meaningLanguage: String) -> SavedSlangSaveResult {
-        let expression = note.translatedExpression.trimmingCharacters(in: .whitespacesAndNewlines)
-        let originalExpression = note.sourceExpression.trimmingCharacters(in: .whitespacesAndNewlines)
+        let expression = note.expression.trimmingCharacters(in: .whitespacesAndNewlines)
         let normalizedExpression = SavedSlangRules.normalize(expression)
         let expressionLanguage = SavedSlangRules.resolvedExpressionLanguage(targetLanguage)
         let meaningLanguage = SavedSlangRules.resolvedMeaningLanguage(
@@ -54,7 +53,6 @@ final class SavedSlangStore {
                 expressionLanguage: expressionLanguage,
                 meaningLanguage: meaningLanguage,
                 meanings: meaning.isEmpty ? [] : [meaning],
-                originalExpressions: originalExpression.isEmpty ? [] : [originalExpression],
                 examples: [],
                 createdAt: now,
                 updatedAt: now,
@@ -67,15 +65,14 @@ final class SavedSlangStore {
 
         var item = items[existingIndex]
         let didAddMeaning = SavedSlangRules.appendUnique(meaning, to: &item.meanings)
-        let didAddOriginalExpression = SavedSlangRules.appendUnique(originalExpression, to: &item.originalExpressions)
-        if didAddMeaning || didAddOriginalExpression {
+        if didAddMeaning {
             item.updatedAt = now
         }
         item.seenCount += 1
         items[existingIndex] = item
         persistence.save(items)
 
-        return didAddMeaning || didAddOriginalExpression ? .updated : .duplicate
+        return didAddMeaning ? .updated : .duplicate
     }
 
     /// Adds one generated example to a saved slang item.
@@ -105,6 +102,7 @@ final class SavedSlangStore {
             return .invalid
         }
 
+        item.updatedAt = Date()
         items[index] = item
         persistence.save(items)
         return .saved(item)
@@ -129,8 +127,14 @@ final class SavedSlangStore {
         }
 
         var item = items[index]
+        let originalExampleCount = item.examples.count
         item.examples.removeAll { $0.id == exampleID }
+        guard item.examples.count < originalExampleCount else {
+            return item
+        }
+
         item.examples = Array(item.examples.prefix(SavedSlangLimits.maximumExampleCount))
+        item.updatedAt = Date()
         items[index] = item
         persistence.save(items)
         return item
