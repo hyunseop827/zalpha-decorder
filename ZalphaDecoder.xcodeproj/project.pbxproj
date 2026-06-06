@@ -12,8 +12,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		004FF3352FC467FB0048ABAC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		004FF3372FC467FB0048ABAC /* PROJECT_CONTEXT.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PROJECT_CONTEXT.md; sourceTree = "<group>"; };
 		004FF3392FC467FB0048ABAC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		00D64FD62FAADC3500CC0F4B /* ZalphaDecoder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZalphaDecoder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -71,19 +69,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		004FF3362FC467FB0048ABAC /* tasks */ = {
-			isa = PBXGroup;
-			children = (
-				004FF3352FC467FB0048ABAC /* README.md */,
-			);
-			path = tasks;
-			sourceTree = "<group>";
-		};
 		004FF3382FC467FB0048ABAC /* custom */ = {
 			isa = PBXGroup;
 			children = (
-				004FF3362FC467FB0048ABAC /* tasks */,
-				004FF3372FC467FB0048ABAC /* PROJECT_CONTEXT.md */,
 			);
 			path = custom;
 			sourceTree = "<group>";
